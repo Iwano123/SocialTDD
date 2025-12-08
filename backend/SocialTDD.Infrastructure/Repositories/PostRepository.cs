@@ -39,6 +39,17 @@ public class PostRepository : IPostRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Post>> GetTimelinePostsAsync(Guid userId)
+    {
+        // Hämta alla posts där användaren är mottagare (sina egna eller från andra)
+        // Detta inkluderar både posts där användaren är avsändare OCH mottagare
+        return await _context.Posts
+            .Include(p => p.Sender)
+            .Include(p => p.Recipient)
+            .Where(p => p.RecipientId == userId)
+            .ToListAsync();
+    }
+
     public async Task<bool> UserExistsAsync(Guid userId)
     {
         return await _context.Users.AnyAsync(u => u.Id == userId);

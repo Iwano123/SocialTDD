@@ -1,0 +1,16 @@
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\bin\Debug\net9.0\SocialTDD.Application.deps.json
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\bin\Debug\net9.0\SocialTDD.Application.dll
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\bin\Debug\net9.0\SocialTDD.Application.pdb
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\bin\Debug\net9.0\SocialTDD.Domain.dll
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\bin\Debug\net9.0\SocialTDD.Domain.pdb
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTDD.Application.csproj.AssemblyReference.cache
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTDD.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTDD.Application.AssemblyInfoInputs.cache
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTDD.Application.AssemblyInfo.cs
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTDD.Application.csproj.CoreCompileInputs.cache
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTDD.Application.sourcelink.json
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTD.3ABA75CF.Up2Date
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTDD.Application.dll
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\refint\SocialTDD.Application.dll
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\SocialTDD.Application.pdb
+C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Application\obj\Debug\net9.0\ref\SocialTDD.Application.dll
