@@ -18,8 +18,10 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./frontend
-        run: npm install
+        run: npm ci
 
       - name: Run tests
         working-directory: ./frontend
-        run: npm test -- --watch=false --passWithNoTests
+        env:
+          CI: true
+        run: npm test -- --watchAll=false --passWithNoTests
