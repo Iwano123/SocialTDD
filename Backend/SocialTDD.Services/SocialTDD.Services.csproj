@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SocialTDD.Domain\SocialTDD.Domain.csproj" />
+    <ProjectReference Include="..\SocialTDD.Data\SocialTDD.Data.csproj" />
+  </ItemGroup>
+
+</Project>
+
+
