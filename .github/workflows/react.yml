@@ -24,4 +24,4 @@ jobs:
         working-directory: ./frontend
         env:
           CI: true
-        run: npm run test -- --watchAll=false --passWithNoTests
+        run: npx --yes react-scripts test --watchAll=false --passWithNoTests
