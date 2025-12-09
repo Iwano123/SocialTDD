@@ -3,5 +3,6 @@ import App from './App';
 
 test('renders app', () => {
   render(<App />);
-  // Minimal test to pass CI
+  const heading = screen.getByText(/SocialTDD/i);
+  expect(heading).toBeInTheDocument();
 });

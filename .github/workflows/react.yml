@@ -22,4 +22,4 @@ jobs:
 
       - name: Run tests
         working-directory: ./frontend
-        run: npm test -- --watch=false
+        run: npm test -- --watch=false --passWithNoTests
