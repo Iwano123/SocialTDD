@@ -17,8 +17,11 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
+        working-directory: ./frontend
         run: npm install
 
       - name: Run tests
-        run: npm test -- --watch=false
-
+        working-directory: ./frontend
+        env:
+          CI: true
+        run: npx --yes react-scripts test --watchAll=false --passWithNoTests
