@@ -10,3 +10,15 @@ C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\
 C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\refint\SocialTDD.Domain.dll
 C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\SocialTDD.Domain.pdb
 C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\ref\SocialTDD.Domain.dll
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\bin\Debug\net9.0\SocialTDD.Domain.deps.json
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\bin\Debug\net9.0\SocialTDD.Domain.dll
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\bin\Debug\net9.0\SocialTDD.Domain.pdb
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\SocialTDD.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\SocialTDD.Domain.AssemblyInfoInputs.cache
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\SocialTDD.Domain.AssemblyInfo.cs
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\SocialTDD.Domain.csproj.CoreCompileInputs.cache
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\SocialTDD.Domain.sourcelink.json
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\SocialTDD.Domain.dll
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\refint\SocialTDD.Domain.dll
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\SocialTDD.Domain.pdb
+C:\users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Domain\obj\Debug\net9.0\ref\SocialTDD.Domain.dll
