@@ -21,7 +21,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 // Add Services
-builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IPostService, PostService>();    
+builder.Services.AddScoped<ITimelineService, TimelineService>();
 
 // Add Validators
 builder.Services.AddScoped<IValidator<SocialTDD.Application.DTOs.CreatePostRequest>, CreatePostRequestValidator>();
