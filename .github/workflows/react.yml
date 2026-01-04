@@ -10,7 +10,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Fix react-scripts permissions
+        run: chmod +x node_modules/.bin/react-scripts
+  
       - name: Install Node
         uses: actions/setup-node@v4
         with:
