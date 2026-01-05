@@ -19,13 +19,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Repositories
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IFollowRepository, FollowRepository>();
 
 // Add Services
-builder.Services.AddScoped<IPostService, PostService>();    
+builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ITimelineService, TimelineService>();
+builder.Services.AddScoped<IFollowService, FollowService>();
 
 // Add Validators
 builder.Services.AddScoped<IValidator<SocialTDD.Application.DTOs.CreatePostRequest>, CreatePostRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateFollowRequest>, CreateFollowRequestValidator>();
 
 // Add CORS
 builder.Services.AddCors(options =>
