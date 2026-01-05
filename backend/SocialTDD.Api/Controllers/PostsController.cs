@@ -41,6 +41,26 @@ public class PostsController : ControllerBase
             return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
         }
     }
+
+    [HttpGet("conversation/{userId1}/{userId2}")]
+    public async Task<ActionResult<List<PostResponse>>> GetConversation(Guid userId1, Guid userId2)
+    {
+        try
+        {
+            var result = await _postService.GetConversationAsync(userId1, userId2);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning("Ogiltigt argument vid hämtning av konversation: {Message}", ex.Message);
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ett oväntat fel uppstod vid hämtning av konversation");
+            return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
+        }
+    }
 }
 
 
