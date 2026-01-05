@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {}
+    "C:\\Users\\eveli\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {}
   },
   "projects": {
-    "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
+    "C:\\Users\\eveli\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\eveli\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj",
         "projectName": "SocialTDD.Domain",
-        "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj",
-        "packagesPath": "C:\\Users\\iwanp\\.nuget\\packages\\",
-        "outputPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\obj\\",
+        "projectPath": "C:\\Users\\eveli\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj",
+        "packagesPath": "C:\\Users\\eveli\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\eveli\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\iwanp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\eveli\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -65,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
