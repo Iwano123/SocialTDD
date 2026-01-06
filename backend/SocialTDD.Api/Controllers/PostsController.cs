@@ -9,11 +9,16 @@ namespace SocialTDD.Api.Controllers;
 public class PostsController : ControllerBase
 {
     private readonly IPostService _postService;
+    private readonly ITimelineService _timelineService;
     private readonly ILogger<PostsController> _logger;
 
-    public PostsController(IPostService postService, ILogger<PostsController> logger)
+    public PostsController(
+        IPostService postService, 
+        ITimelineService timelineService,
+        ILogger<PostsController> logger)
     {
         _postService = postService;
+        _timelineService = timelineService;
         _logger = logger;
     }
 
@@ -41,6 +46,24 @@ public class PostsController : ControllerBase
             return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
         }
     }
+
+    [HttpGet("timeline/{userId}")]
+    public async Task<ActionResult<List<PostResponse>>> GetTimeline(Guid userId)
+    {
+        try
+        {
+            var result = await _timelineService.GetTimelineAsync(userId);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning("Ogiltigt användar-ID vid hämtning av tidslinje: {Message}", ex.Message);
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ett oväntat fel uppstod vid hämtning av tidslinje");
+            return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
+        }
+    }
 }
-
-
