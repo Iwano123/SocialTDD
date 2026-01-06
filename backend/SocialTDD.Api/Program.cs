@@ -19,12 +19,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Repositories
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IDirectMessageRepository, DirectMessageRepository>();
 
 // Add Services
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IDirectMessageService, DirectMessageService>();
 
 // Add Validators
 builder.Services.AddScoped<IValidator<SocialTDD.Application.DTOs.CreatePostRequest>, CreatePostRequestValidator>();
+builder.Services.AddScoped<IValidator<SocialTDD.Application.DTOs.CreateDirectMessageRequest>, CreateDirectMessageRequestValidator>();
 
 // Add CORS
 builder.Services.AddCors(options =>
