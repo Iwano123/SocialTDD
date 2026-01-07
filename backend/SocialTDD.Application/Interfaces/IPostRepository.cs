@@ -11,3 +11,4 @@ public interface IPostRepository
     Task<IEnumerable<Post>> GetConversationAsync(Guid userId1, Guid userId2);
     Task<bool> UserExistsAsync(Guid userId);
 }
+
