@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
 // Add Entity Framework
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -43,10 +43,19 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SocialTDD API v1");
+        c.RoutePrefix = string.Empty; // Swagger UI på root
+    });
+}
+else
+{
+    // Only redirect to HTTPS in production
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();
 app.MapControllers();
