@@ -22,31 +22,6 @@ namespace SocialTDD.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SocialTDD.Domain.Entities.Follow", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("FollowerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FollowingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowingId");
-
-                    b.HasIndex("FollowerId", "FollowingId")
-                        .IsUnique();
-
-                    b.ToTable("Follows");
-                });
-
             modelBuilder.Entity("SocialTDD.Domain.Entities.Post", b =>
                 {
                     b.Property<Guid>("Id")
@@ -98,25 +73,6 @@ namespace SocialTDD.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("SocialTDD.Domain.Entities.Follow", b =>
-                {
-                    b.HasOne("SocialTDD.Domain.Entities.User", "Follower")
-                        .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SocialTDD.Domain.Entities.User", "Following")
-                        .WithMany()
-                        .HasForeignKey("FollowingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Follower");
-
-                    b.Navigation("Following");
                 });
 
             modelBuilder.Entity("SocialTDD.Domain.Entities.Post", b =>

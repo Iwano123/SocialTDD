@@ -8,5 +8,7 @@ public interface IPostRepository
     Task<Post?> GetByIdAsync(Guid id);
     Task<IEnumerable<Post>> GetByRecipientIdAsync(Guid recipientId);
     Task<IEnumerable<Post>> GetTimelinePostsAsync(Guid userId); // NY METOD
+    Task<IEnumerable<Post>> GetConversationAsync(Guid userId1, Guid userId2);
     Task<bool> UserExistsAsync(Guid userId);
 }
+

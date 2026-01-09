@@ -60,6 +60,43 @@ public class PostService : IPostService
             CreatedAt = createdPost.CreatedAt
         };
     }
+
+    public async Task<List<PostResponse>> GetConversationAsync(Guid userId1, Guid userId2)
+    {
+        // Validera att båda användare existerar
+        var user1Exists = await _postRepository.UserExistsAsync(userId1);
+        if (!user1Exists)
+        {
+            throw new ArgumentException($"Användare med ID {userId1} finns inte.", nameof(userId1));
+        }
+
+        var user2Exists = await _postRepository.UserExistsAsync(userId2);
+        if (!user2Exists)
+        {
+            throw new ArgumentException($"Användare med ID {userId2} finns inte.", nameof(userId2));
+        }
+
+        // Validera att användarna inte är samma
+        if (userId1 == userId2)
+        {
+            throw new ArgumentException("Användare kan inte ha en konversation med sig själv.");
+        }
+
+        // Hämta konversationen
+        var posts = await _postRepository.GetConversationAsync(userId1, userId2);
+
+        // Konvertera till DTOs
+        return posts.Select(p => new PostResponse
+        {
+            Id = p.Id,
+            SenderId = p.SenderId,
+            RecipientId = p.RecipientId,
+            Message = p.Message,
+            CreatedAt = p.CreatedAt
+        }).ToList();
+    }
 }
+
+
 
 
