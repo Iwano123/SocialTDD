@@ -42,25 +42,25 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
             entity.Property(e => e.CreatedAt).IsRequired();
         });
+
+        modelBuilder.Entity<Follow>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.CreatedAt).IsRequired();
+
+            // Unik constraint: en användare kan bara följa en annan användare en gång
+            entity.HasIndex(e => new { e.FollowerId, e.FollowingId })
+                .IsUnique();
+
+            entity.HasOne(e => e.Follower)
+                .WithMany()
+                .HasForeignKey(e => e.FollowerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.Following)
+                .WithMany()
+                .HasForeignKey(e => e.FollowingId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 }
-
-modelBuilder.Entity<Follow>(entity =>
-{
-    entity.HasKey(e => e.Id);
-    entity.Property(e => e.CreatedAt).IsRequired();
-
-    // Unik constraint: en användare kan bara följa en annan användare en gång
-    entity.HasIndex(e => new { e.FollowerId, e.FollowingId })
-        .IsUnique();
-
-    entity.HasOne(e => e.Follower)
-        .WithMany()
-        .HasForeignKey(e => e.FollowerId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-    entity.HasOne(e => e.Following)
-        .WithMany()
-        .HasForeignKey(e => e.FollowingId)
-        .OnDelete(DeleteBehavior.Restrict);
-});
