@@ -144,14 +144,14 @@
         }
       }
     },
-    "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj": {
+    "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj",
         "projectName": "SocialTDD.Infrastructure",
-        "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\iwanp\\.nuget\\packages\\",
-        "outputPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -262,8 +262,8 @@
               "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
                 "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj"
               },
-              "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj": {
-                "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj"
+              "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj"
               }
             }
           }
