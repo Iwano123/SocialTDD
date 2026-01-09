@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using SocialTDD.Application.Interfaces;
 using SocialTDD.Application.Services;
 using SocialTDD.Application.Validators;
@@ -25,10 +24,8 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostService, PostService>();    
 builder.Services.AddScoped<ITimelineService, TimelineService>();
 
-// Add FluentValidation with automatic validation
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddFluentValidationClientsideAdapters();
-builder.Services.AddValidatorsFromAssemblyContaining<CreatePostRequestValidator>();
+// Add Validators
+builder.Services.AddScoped<IValidator<SocialTDD.Application.DTOs.CreatePostRequest>, CreatePostRequestValidator>();
 
 // Add CORS
 builder.Services.AddCors(options =>
