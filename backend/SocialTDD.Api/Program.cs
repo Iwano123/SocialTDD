@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
+using SocialTDD.Application.DTOs;
 using SocialTDD.Application.Interfaces;
 using SocialTDD.Application.Services;
 using SocialTDD.Application.Validators;
