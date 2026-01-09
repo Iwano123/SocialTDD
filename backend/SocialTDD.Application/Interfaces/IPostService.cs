@@ -8,3 +8,5 @@ public interface IPostService
     Task<List<PostResponse>> GetConversationAsync(Guid userId1, Guid userId2);
 }
 
+
+
