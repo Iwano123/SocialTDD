@@ -21,11 +21,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add Repositories
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IDirectMessageRepository, DirectMessageRepository>();
+builder.Services.AddScoped<IFollowRepository, FollowRepository>();
 
 // Add Services
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IDirectMessageService, DirectMessageService>();
 builder.Services.AddScoped<ITimelineService, TimelineService>();
+builder.Services.AddScoped<IFollowService, FollowService>();
+builder.Services.AddScoped<IWallService, WallService>();
 
 // Add FluentValidation with automatic validation
 builder.Services.AddFluentValidationAutoValidation();
