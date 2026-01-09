@@ -20,15 +20,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Repositories
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IDirectMessageRepository, DirectMessageRepository>();
 
 // Add Services
-builder.Services.AddScoped<IPostService, PostService>();    
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IDirectMessageService, DirectMessageService>();
 builder.Services.AddScoped<ITimelineService, TimelineService>();
 
 // Add FluentValidation with automatic validation
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<CreatePostRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateDirectMessageRequestValidator>();
 
 // Add CORS
 builder.Services.AddCors(options =>
