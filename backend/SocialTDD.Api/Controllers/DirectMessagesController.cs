@@ -20,15 +20,13 @@ public class DirectMessagesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DirectMessageResponse>> SendDirectMessage([FromBody] CreateDirectMessageRequest request)
     {
+        // Validering sker automatiskt via FluentValidation.AspNetCore
+        // Om valideringen misslyckas returneras automatiskt BadRequest med felmeddelanden
+        
         try
         {
             var result = await _directMessageService.SendDirectMessageAsync(request);
             return Ok(result);
-        }
-        catch (FluentValidation.ValidationException ex)
-        {
-            _logger.LogWarning("Valideringsfel vid skickande av DM: {Errors}", ex.Errors);
-            return BadRequest(new { errors = ex.Errors.Select(e => new { property = e.PropertyName, message = e.ErrorMessage }) });
         }
         catch (ArgumentException ex)
         {

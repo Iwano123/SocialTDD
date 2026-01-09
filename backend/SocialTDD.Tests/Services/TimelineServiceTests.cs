@@ -240,4 +240,43 @@ public class TimelineServiceTests
         result.Should().HaveCount(2);
         result.Should().OnlyContain(p => p.CreatedAt == sameTimestamp);
     }
+
+    [Fact]
+    public async Task GetTimelineAsync_OnlyReturnsPosts_NotDirectMessages()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var senderId = Guid.NewGuid();
+        
+        // Timeline ska bara returnera Posts, inte DirectMessages
+        // Detta test verifierar att TimelineService endast använder PostRepository
+        // och inte inkluderar DirectMessages i resultatet
+        var posts = new List<Post>
+        {
+            new Post 
+            { 
+                Id = Guid.NewGuid(), 
+                SenderId = senderId, 
+                RecipientId = userId, 
+                Message = "Ett publikt inlägg", 
+                CreatedAt = DateTime.UtcNow,
+                Sender = new User { Id = senderId, Username = "Sender" },
+                Recipient = new User { Id = userId, Username = "Recipient" }
+            }
+        };
+
+        _mockRepository.Setup(r => r.UserExistsAsync(userId)).ReturnsAsync(true);
+        _mockRepository.Setup(r => r.GetTimelinePostsAsync(userId)).ReturnsAsync(posts);
+
+        // Act
+        var result = await _timelineService.GetTimelineAsync(userId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(1);
+        result.Should().OnlyContain(p => p.Message == "Ett publikt inlägg");
+        // Verifiera att TimelineService endast använder PostRepository
+        // DirectMessages är separerade och visas inte här
+        _mockRepository.Verify(r => r.GetTimelinePostsAsync(userId), Times.Once);
+    }
 }

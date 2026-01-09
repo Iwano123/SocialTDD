@@ -295,5 +295,69 @@ public class DirectMessageServiceTests
         _mockRepository.Verify(r => r.GetByIdAsync(messageId), Times.Once);
         _mockRepository.Verify(r => r.UpdateAsync(It.IsAny<DirectMessage>()), Times.Never);
     }
+
+    [Fact]
+    public async Task SendDirectMessageAsync_MessageWithOnlyWhitespace_ThrowsValidationException()
+    {
+        // Arrange
+        var request = new CreateDirectMessageRequest
+        {
+            SenderId = Guid.NewGuid(),
+            RecipientId = Guid.NewGuid(),
+            Message = "   " // Bara mellanslag
+        };
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _directMessageService.SendDirectMessageAsync(request));
+        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<DirectMessage>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task SendDirectMessageAsync_NullMessage_ThrowsValidationException()
+    {
+        // Arrange
+        var request = new CreateDirectMessageRequest
+        {
+            SenderId = Guid.NewGuid(),
+            RecipientId = Guid.NewGuid(),
+            Message = null!
+        };
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _directMessageService.SendDirectMessageAsync(request));
+        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<DirectMessage>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task SendDirectMessageAsync_EmptySenderId_ThrowsValidationException()
+    {
+        // Arrange
+        var request = new CreateDirectMessageRequest
+        {
+            SenderId = Guid.Empty,
+            RecipientId = Guid.NewGuid(),
+            Message = "Testmeddelande"
+        };
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _directMessageService.SendDirectMessageAsync(request));
+        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<DirectMessage>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task SendDirectMessageAsync_EmptyRecipientId_ThrowsValidationException()
+    {
+        // Arrange
+        var request = new CreateDirectMessageRequest
+        {
+            SenderId = Guid.NewGuid(),
+            RecipientId = Guid.Empty,
+            Message = "Testmeddelande"
+        };
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _directMessageService.SendDirectMessageAsync(request));
+        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<DirectMessage>()), Times.Never);
+    }
 }
 
