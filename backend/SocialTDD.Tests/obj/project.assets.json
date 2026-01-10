@@ -3934,11 +3934,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Tests\\SocialTDD.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Tests\\SocialTDD.Tests.csproj",
       "projectName": "SocialTDD.Tests",
-      "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Tests\\SocialTDD.Tests.csproj",
+      "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Tests\\SocialTDD.Tests.csproj",
       "packagesPath": "C:\\Users\\iwanp\\.nuget\\packages\\",
-      "outputPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Tests\\obj\\",
+      "outputPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3959,11 +3959,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj": {
-              "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj"
+            "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj": {
+              "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj"
             },
-            "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
-              "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj"
+            "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
+              "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj"
             },
             "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj": {
               "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Infrastructure\\SocialTDD.Infrastructure.csproj"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jhMvMBG+b5w=",
+  "dgSpecHash": "bsnICfWMX2A=",
   "success": true,
-  "projectFilePath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Tests\\SocialTDD.Tests.csproj",
+  "projectFilePath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Tests\\SocialTDD.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\iwanp\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\iwanp\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

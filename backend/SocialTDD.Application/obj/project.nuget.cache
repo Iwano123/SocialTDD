@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "e/V5xuRYifQ=",
+  "dgSpecHash": "G0QrBse+XxM=",
   "success": true,
-  "projectFilePath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj",
+  "projectFilePath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\iwanp\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512"
   ],

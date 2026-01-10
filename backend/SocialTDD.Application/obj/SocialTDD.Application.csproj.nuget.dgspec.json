@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj": {}
+    "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj": {}
   },
   "projects": {
-    "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj": {
+    "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj",
+        "projectUniqueName": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj",
         "projectName": "SocialTDD.Application",
-        "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj",
+        "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj",
         "packagesPath": "C:\\Users\\iwanp\\.nuget\\packages\\",
-        "outputPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\obj\\",
+        "outputPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
-                "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj"
+              "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
+                "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj"
               }
             }
           }
@@ -79,14 +79,14 @@
         }
       }
     },
-    "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
+    "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj",
         "projectName": "SocialTDD.Domain",
-        "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj",
+        "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj",
         "packagesPath": "C:\\Users\\iwanp\\.nuget\\packages\\",
-        "outputPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\obj\\",
+        "outputPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
