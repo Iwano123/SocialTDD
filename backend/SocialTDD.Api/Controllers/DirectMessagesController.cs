@@ -40,7 +40,7 @@ public class DirectMessagesController : ControllerBase
         }
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet("received/{userId}")]
     public async Task<ActionResult<List<DirectMessageResponse>>> GetReceivedMessages(Guid userId)
     {
         try

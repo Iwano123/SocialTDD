@@ -13,6 +13,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Post> Posts { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<DirectMessage> DirectMessages { get; set; }
+    public DbSet<Follow> Follows { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -59,6 +60,25 @@ public class ApplicationDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(e => e.RecipientId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Follow>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.CreatedAt).IsRequired();
+
+            entity.HasOne(e => e.Follower)
+                .WithMany()
+                .HasForeignKey(e => e.FollowerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.Following)
+                .WithMany()
+                .HasForeignKey(e => e.FollowingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(e => new { e.FollowerId, e.FollowingId })
+                .IsUnique();
         });
     }
 }
