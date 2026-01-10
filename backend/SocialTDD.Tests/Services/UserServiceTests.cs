@@ -105,7 +105,7 @@ public class UserServiceTests
         var exception = await Assert.ThrowsAsync<ArgumentException>(
             () => _userService.RegisterAsync(request));
         
-        exception.Message.Should().Contain("användarnamn");
+        exception.Message.Should().ContainEquivalentOf("användarnamn");
         exception.Message.Should().Contain("finns redan");
         _mockRepository.Verify(r => r.CreateUserAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Never);
     }
@@ -135,7 +135,7 @@ public class UserServiceTests
         var exception = await Assert.ThrowsAsync<ArgumentException>(
             () => _userService.RegisterAsync(request));
         
-        exception.Message.Should().Contain("e-post");
+        exception.Message.Should().ContainEquivalentOf("e-post");
         exception.Message.Should().Contain("finns redan");
         _mockRepository.Verify(r => r.CreateUserAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Never);
     }
@@ -251,7 +251,7 @@ public class UserServiceTests
         var exception = await Assert.ThrowsAsync<ArgumentException>(
             () => _userService.LoginAsync(request));
         
-        exception.Message.Should().Contain("användarnamn");
+        exception.Message.Should().ContainEquivalentOf("användarnamn");
         exception.Message.Should().Contain("felaktigt");
     }
 
@@ -285,7 +285,7 @@ public class UserServiceTests
         var exception = await Assert.ThrowsAsync<ArgumentException>(
             () => _userService.LoginAsync(request));
         
-        exception.Message.Should().Contain("användarnamn");
+        exception.Message.Should().ContainEquivalentOf("användarnamn");
         exception.Message.Should().Contain("felaktigt");
     }
 
@@ -538,7 +538,7 @@ public class UserServiceTests
         var exception = await Assert.ThrowsAsync<ArgumentException>(
             () => _userService.RegisterAsync(request));
         
-        exception.Message.Should().Contain("e-post");
+        exception.Message.Should().ContainEquivalentOf("e-post");
     }
 
     [Fact]
@@ -557,7 +557,7 @@ public class UserServiceTests
         var exception = await Assert.ThrowsAsync<ArgumentException>(
             () => _userService.LoginAsync(request));
         
-        exception.Message.Should().Contain("användarnamn");
+        exception.Message.Should().ContainEquivalentOf("användarnamn");
         exception.Message.Should().Contain("felaktigt");
     }
 
@@ -588,7 +588,7 @@ public class UserServiceTests
         var exception = await Assert.ThrowsAsync<ArgumentException>(
             () => _userService.LoginAsync(request));
         
-        exception.Message.Should().Contain("lösenord");
+        exception.Message.Should().ContainEquivalentOf("lösenord");
     }
 
     #endregion
