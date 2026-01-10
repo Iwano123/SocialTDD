@@ -159,3 +159,6 @@ C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\ref
 C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\SocialTDD.Api.pdb
 C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\SocialTDD.Api.genruntimeconfig.cache
 C:\Users\eveli\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\ref\SocialTDD.Api.dll
+C:\Users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\SocialTDD.Api.dll
+C:\Users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\refint\SocialTDD.Api.dll
+C:\Users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\SocialTDD.Api.pdb

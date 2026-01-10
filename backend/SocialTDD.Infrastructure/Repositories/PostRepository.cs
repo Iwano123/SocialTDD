@@ -61,6 +61,20 @@ public class PostRepository : IPostRepository
             .OrderBy(p => p.CreatedAt)
             .ToListAsync();
     }
+        public async Task<IEnumerable<Post>> GetPostsBySenderIdsAsync(IEnumerable<Guid> senderIds)
+    {
+        var senderIdsList = senderIds.ToList();
+        if (!senderIdsList.Any())
+        {
+            return Enumerable.Empty<Post>();
+        }
+
+        return await _context.Posts
+            .Include(p => p.Sender)
+            .Include(p => p.Recipient)
+            .Where(p => senderIdsList.Contains(p.SenderId))
+            .ToListAsync();
+    }
 
     public async Task<bool> UserExistsAsync(Guid userId)
     {

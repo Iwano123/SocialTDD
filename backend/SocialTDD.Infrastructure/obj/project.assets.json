@@ -4774,11 +4774,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj": {
-              "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj"
+            "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj": {
+              "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Application\\SocialTDD.Application.csproj"
             },
-            "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
-              "projectPath": "C:\\Users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj"
+            "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj": {
+              "projectPath": "C:\\users\\iwanp\\source\\repos\\SocialTDD\\backend\\SocialTDD.Domain\\SocialTDD.Domain.csproj"
             }
           }
         }
