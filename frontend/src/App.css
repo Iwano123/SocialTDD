@@ -78,6 +78,10 @@
   gap: 20px;
 }
 
+.dm-section {
+  margin-top: 30px;
+}
+
 @media (max-width: 768px) {
   .lists-container {
     grid-template-columns: 1fr;
