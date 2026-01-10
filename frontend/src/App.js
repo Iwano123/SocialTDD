@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FollowUser from './components/FollowUser';
 import FollowersList from './components/FollowersList';
 import FollowingList from './components/FollowingList';
+import Timeline from './components/Timeline';
 import SendDirectMessage from './components/SendDirectMessage';
 import DirectMessagesList from './components/DirectMessagesList';
 import './App.css';
@@ -13,7 +14,6 @@ function App() {
   const [dmRefreshKey, setDmRefreshKey] = useState(0);
 
   const handleFollowChange = () => {
-    // Uppdatera listorna när följ-status ändras
     setRefreshKey(prev => prev + 1);
   };
 
@@ -69,8 +69,9 @@ function App() {
         {currentUserId && (
           <div className="lists-section">
             <div className="lists-container">
-              <FollowersList key={`followers-${ refreshKey }`} userId={currentUserId} />
-              <FollowingList key={`following-${ refreshKey }`} userId={currentUserId} />
+              <FollowersList key={`followers-${refreshKey}`} userId={currentUserId} />
+              <FollowingList key={`following-${refreshKey}`} userId={currentUserId} />
+              <Timeline key={`timeline-${refreshKey}`} userId={currentUserId} />
             </div>
           </div>
         )}
