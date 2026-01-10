@@ -2,37 +2,30 @@ import React, { useState } from 'react';
 import FollowUser from './components/FollowUser';
 import FollowersList from './components/FollowersList';
 import FollowingList from './components/FollowingList';
-import Timeline from './components/Timeline';
-import SendDirectMessage from './components/SendDirectMessage';
-import DirectMessagesList from './components/DirectMessagesList';
+import Wall from './components/Wall';
 import './App.css';
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState('');
   const [targetUserId, setTargetUserId] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
-  const [dmRefreshKey, setDmRefreshKey] = useState(0);
 
   const handleFollowChange = () => {
+    // Uppdatera listorna och väggen när följ-status ändras
     setRefreshKey(prev => prev + 1);
-  };
-
-  const handleMessageSent = () => {
-    // Uppdatera DM-listan när ett nytt meddelande skickas
-    setDmRefreshKey(prev => prev + 1);
   };
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>SocialTDD</h1>
-        <p>Följ användare och skicka direktmeddelanden</p>
+        <p>Följ användare och se deras inlägg</p>
       </header>
 
       <main className="App-main">
         <div className="user-input-section">
           <div className="input-group">
-            <label htmlFor="currentUserId">Ditt användar-ID (följare):</label>
+            <label htmlFor="currentUserId">Ditt användar-ID:</label>
             <input
               id="currentUserId"
               type="text"
@@ -67,30 +60,16 @@ function App() {
         </div>
 
         {currentUserId && (
-          <div className="lists-section">
-            <div className="lists-container">
-              <FollowersList key={`followers-${refreshKey}`} userId={currentUserId} />
-              <FollowingList key={`following-${refreshKey}`} userId={currentUserId} />
-              <Timeline key={`timeline-${refreshKey}`} userId={currentUserId} />
+          <div className="content-section">
+            <div className="wall-section">
+              <Wall key={`wall-${ refreshKey }`} userId={currentUserId} />
             </div>
-          </div>
-        )}
-
-        {currentUserId && (
-          <div className="dm-section">
-            <SendDirectMessage 
-              senderId={currentUserId} 
-              onMessageSent={handleMessageSent}
-            />
-          </div>
-        )}
-
-        {currentUserId && (
-          <div className="dm-section">
-            <DirectMessagesList 
-              key={`dm-list-${ dmRefreshKey }`}
-              userId={currentUserId}
-            />
+            <div className="lists-section">
+              <div className="lists-container">
+                <FollowersList key={`followers-${ refreshKey }`} userId={currentUserId} />
+                <FollowingList key={`following-${ refreshKey }`} userId={currentUserId} />
+              </div>
+            </div>
           </div>
         )}
       </main>
