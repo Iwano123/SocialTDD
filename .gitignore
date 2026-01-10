@@ -90,3 +90,21 @@ logs/
 *.tmp
 *.temp
 *.cache
+
+## Test results and coverage
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+coverage.*/
+*.lcov
+.coverlet/
+.coveralls.yml
+
+## Test output files
+*.testlog
+*.testresult
+test-results/
+test-output/
