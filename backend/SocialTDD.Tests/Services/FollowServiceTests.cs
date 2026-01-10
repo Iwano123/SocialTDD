@@ -307,4 +307,15 @@ public class FollowServiceTests
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentException>(() => _followService.GetFollowersAsync(userId));
     }
+
+    [Fact]
+    public async Task GetFollowingAsync_NonExistentUser_ThrowsArgumentException()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        _mockRepository.Setup(r => r.UserExistsAsync(userId)).ReturnsAsync(false);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentException>(() => _followService.GetFollowingAsync(userId));
+    }
 }
