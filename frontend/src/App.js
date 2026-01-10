@@ -2,23 +2,31 @@ import React, { useState } from 'react';
 import FollowUser from './components/FollowUser';
 import FollowersList from './components/FollowersList';
 import FollowingList from './components/FollowingList';
+import SendDirectMessage from './components/SendDirectMessage';
+import DirectMessagesList from './components/DirectMessagesList';
 import './App.css';
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState('');
   const [targetUserId, setTargetUserId] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
+  const [dmRefreshKey, setDmRefreshKey] = useState(0);
 
   const handleFollowChange = () => {
     // Uppdatera listorna när följ-status ändras
     setRefreshKey(prev => prev + 1);
   };
 
+  const handleMessageSent = () => {
+    // Uppdatera DM-listan när ett nytt meddelande skickas
+    setDmRefreshKey(prev => prev + 1);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>SocialTDD</h1>
-        <p>Följ och avfölj användare</p>
+        <p>Följ användare och skicka direktmeddelanden</p>
       </header>
 
       <main className="App-main">
@@ -64,6 +72,24 @@ function App() {
               <FollowersList key={`followers-${ refreshKey }`} userId={currentUserId} />
               <FollowingList key={`following-${ refreshKey }`} userId={currentUserId} />
             </div>
+          </div>
+        )}
+
+        {currentUserId && (
+          <div className="dm-section">
+            <SendDirectMessage 
+              senderId={currentUserId} 
+              onMessageSent={handleMessageSent}
+            />
+          </div>
+        )}
+
+        {currentUserId && (
+          <div className="dm-section">
+            <DirectMessagesList 
+              key={`dm-list-${ dmRefreshKey }`}
+              userId={currentUserId}
+            />
           </div>
         )}
       </main>
