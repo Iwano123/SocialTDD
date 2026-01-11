@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { postsApi } from '../services/postsApi';
+import { ApiError, ErrorCodes } from '../utils/ApiError';
 import './CreatePost.css';
 
 function CreatePost({ senderId, onPostCreated }) {
@@ -85,7 +86,35 @@ function CreatePost({ senderId, onPostCreated }) {
         setSuccess(false);
       }, 3000);
     } catch (err) {
-      setError(err.message || 'Ett fel uppstod vid skapande av inlägg');
+      if (err instanceof ApiError) {
+        switch (err.errorCode) {
+          case ErrorCodes.TOKEN_EXPIRED:
+            setError('Din session har gått ut. Logga in igen.');
+            break;
+          case ErrorCodes.NETWORK_ERROR:
+            setError('Kunde inte ansluta till servern. Kontrollera din internetanslutning.');
+            break;
+          case ErrorCodes.TIMEOUT_ERROR:
+            setError('Begäran tog för lång tid. Försök igen.');
+            break;
+          case ErrorCodes.INVALID_RECIPIENT_ID:
+            setError('Ogiltigt mottagar-ID.');
+            break;
+          case ErrorCodes.MESSAGE_TOO_LONG:
+            setError('Meddelandet är för långt.');
+            break;
+          case ErrorCodes.MESSAGE_TOO_SHORT:
+            setError('Meddelandet är för kort.');
+            break;
+          case ErrorCodes.VALIDATION_ERROR:
+            setError('Valideringsfel. Kontrollera dina indata.');
+            break;
+          default:
+            setError(err.message || 'Ett fel uppstod vid skapande av inlägg');
+        }
+      } else {
+        setError(err.message || 'Ett fel uppstod vid skapande av inlägg');
+      }
     } finally {
       setLoading(false);
     }

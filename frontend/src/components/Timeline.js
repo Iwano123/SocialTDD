@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { postsApi } from '../services/postsApi';
+import { ApiError, ErrorCodes } from '../utils/ApiError';
 import './Timeline.css';
 
 function Timeline({ userId }) {
@@ -22,7 +23,26 @@ function Timeline({ userId }) {
       });
       setPosts(sortedPosts);
     } catch (err) {
-      setError(err.message || 'Kunde inte hämta tidslinje');
+      if (err instanceof ApiError) {
+        switch (err.errorCode) {
+          case ErrorCodes.TOKEN_EXPIRED:
+            setError('Din session har gått ut. Logga in igen.');
+            break;
+          case ErrorCodes.NETWORK_ERROR:
+            setError('Kunde inte ansluta till servern. Kontrollera din internetanslutning.');
+            break;
+          case ErrorCodes.TIMEOUT_ERROR:
+            setError('Begäran tog för lång tid. Försök igen.');
+            break;
+          case ErrorCodes.INVALID_USER_ID:
+            setError('Ogiltigt användar-ID.');
+            break;
+          default:
+            setError(err.message || 'Kunde inte hämta tidslinje');
+        }
+      } else {
+        setError(err.message || 'Kunde inte hämta tidslinje');
+      }
     } finally {
       setLoading(false);
     }
