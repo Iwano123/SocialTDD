@@ -45,24 +45,15 @@ function Timeline({ userId }) {
     });
   };
 
-  if (loading) {
+  if (loading && posts.length === 0) {
     return (
       <div className="timeline">
-        <h3>Tidslinje</h3>
-        <div className="loading">Laddar tidslinje...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="timeline">
-        <h3>Tidslinje</h3>
-        <div className="error">
-          {error}
-          <button onClick={fetchTimeline} style={{ marginLeft: '10px', padding: '5px 10px' }}>
-            Försök igen
-          </button>
+        <div className="timeline-header">
+          <h3>Tidslinje</h3>
+        </div>
+        <div className="loading">
+          <span className="loading-spinner"></span>
+          <span>Laddar tidslinje...</span>
         </div>
       </div>
     );
@@ -70,10 +61,33 @@ function Timeline({ userId }) {
 
   return (
     <div className="timeline">
-      <h3>Tidslinje</h3>
-      {posts.length === 0 ? (
+      <div className="timeline-header">
+        <h3>Tidslinje</h3>
+        <button
+          onClick={fetchTimeline}
+          className="timeline-refresh-button"
+          disabled={loading}
+          title="Uppdatera tidslinje"
+          aria-label="Uppdatera tidslinje"
+        >
+          <span className={loading ? 'refresh-icon spinning' : 'refresh-icon'}>⟳</span>
+        </button>
+      </div>
+      
+      {error && (
+        <div className="error-message" role="alert">
+          <span className="error-icon">⚠️</span>
+          <span className="error-text">{error}</span>
+          <button onClick={fetchTimeline} className="error-retry-button">
+            Försök igen
+          </button>
+        </div>
+      )}
+
+      {posts.length === 0 && !loading && !error ? (
         <div className="empty-message">
-          Inga inlägg att visa i tidslinjen.
+          <p>Inga inlägg att visa i tidslinjen.</p>
+          <p className="empty-hint">Skapa ett inlägg eller vänta på att någon postar på din tidslinje.</p>
         </div>
       ) : (
         <div className="timeline-posts">
