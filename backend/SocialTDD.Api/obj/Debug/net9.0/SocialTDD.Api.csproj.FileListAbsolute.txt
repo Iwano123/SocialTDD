@@ -326,4 +326,3 @@ C:\Users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\ref
 C:\Users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\SocialTDD.Api.pdb
 C:\Users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\SocialTDD.Api.genruntimeconfig.cache
 C:\Users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Api\obj\Debug\net9.0\ref\SocialTDD.Api.dll
-C:\Users\iwanp\source\repos\SocialTDD\backend\SocialTDD.Api\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
