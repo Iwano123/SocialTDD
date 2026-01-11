@@ -45,24 +45,15 @@ function Wall({ userId }) {
     });
   };
 
-  if (loading) {
+  if (loading && posts.length === 0) {
     return (
       <div className="wall">
-        <h2>Vägg</h2>
-        <div className="loading">Laddar vägg...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="wall">
-        <h2>Vägg</h2>
-        <div className="error">
-          {error}
-          <button onClick={fetchWall} style={{ marginLeft: '10px', padding: '5px 10px' }}>
-            Försök igen
-          </button>
+        <div className="wall-header">
+          <h2>Vägg</h2>
+        </div>
+        <div className="loading">
+          <span className="loading-spinner"></span>
+          <span>Laddar vägg...</span>
         </div>
       </div>
     );
@@ -70,8 +61,30 @@ function Wall({ userId }) {
 
   return (
     <div className="wall">
-      <h2>Vägg</h2>
-      {posts.length === 0 ? (
+      <div className="wall-header">
+        <h2>Vägg</h2>
+        <button
+          onClick={fetchWall}
+          className="wall-refresh-button"
+          disabled={loading}
+          title="Uppdatera vägg"
+          aria-label="Uppdatera vägg"
+        >
+          <span className={loading ? 'refresh-icon spinning' : 'refresh-icon'}>⟳</span>
+        </button>
+      </div>
+
+      {error && (
+        <div className="error-message" role="alert">
+          <span className="error-icon">⚠️</span>
+          <span className="error-text">{error}</span>
+          <button onClick={fetchWall} className="error-retry-button">
+            Försök igen
+          </button>
+        </div>
+      )}
+
+      {posts.length === 0 && !loading && !error ? (
         <div className="empty-message">
           <p>Inga inlägg från följda användare att visa.</p>
           <p className="empty-hint">Följ användare för att se deras inlägg här.</p>

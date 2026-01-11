@@ -98,8 +98,9 @@ function DirectMessagesList({ userId }) {
           className="dm-list-refresh-button"
           disabled={loading}
           title="Uppdatera"
+          aria-label="Uppdatera meddelanden"
         >
-          ⟳
+          <span className={loading ? 'refresh-icon spinning' : 'refresh-icon'}>⟳</span>
         </button>
       </div>
 

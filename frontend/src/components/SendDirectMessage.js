@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { dmApi } from '../services/dmApi';
+import { ApiError, ErrorCodes } from '../utils/ApiError';
 import './SendDirectMessage.css';
 
 function SendDirectMessage({ senderId, onMessageSent }) {
@@ -82,7 +83,35 @@ function SendDirectMessage({ senderId, onMessageSent }) {
         setSuccess(false);
       }, 3000);
     } catch (err) {
-      setError(err.message || 'Ett fel uppstod vid skickande av meddelande');
+      if (err instanceof ApiError) {
+        switch (err.errorCode) {
+          case ErrorCodes.TOKEN_EXPIRED:
+            setError('Din session har gått ut. Logga in igen.');
+            break;
+          case ErrorCodes.NETWORK_ERROR:
+            setError('Kunde inte ansluta till servern. Kontrollera din internetanslutning.');
+            break;
+          case ErrorCodes.TIMEOUT_ERROR:
+            setError('Begäran tog för lång tid. Försök igen.');
+            break;
+          case ErrorCodes.INVALID_RECIPIENT_ID:
+            setError('Ogiltigt mottagar-ID.');
+            break;
+          case ErrorCodes.MESSAGE_TOO_LONG:
+            setError('Meddelandet är för långt.');
+            break;
+          case ErrorCodes.MESSAGE_TOO_SHORT:
+            setError('Meddelandet är för kort.');
+            break;
+          case ErrorCodes.VALIDATION_ERROR:
+            setError('Valideringsfel. Kontrollera dina indata.');
+            break;
+          default:
+            setError(err.message || 'Ett fel uppstod vid skickande av meddelande');
+        }
+      } else {
+        setError(err.message || 'Ett fel uppstod vid skickande av meddelande');
+      }
     } finally {
       setLoading(false);
     }

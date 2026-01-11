@@ -1,3 +1,5 @@
+import { handleApiResponse } from '../utils/apiClient';
+
 const API_BASE_URL = 'http://localhost:5000/api';
 
 export const authApi = {
@@ -15,12 +17,7 @@ export const authApi = {
       }),
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || error.message || 'Kunde inte registrera användare');
-    }
-
-    return await response.json();
+    return await handleApiResponse(response);
   },
 
   // Logga in
@@ -36,11 +33,6 @@ export const authApi = {
       }),
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || error.message || 'Kunde inte logga in');
-    }
-
-    return await response.json();
+    return await handleApiResponse(response);
   },
 };

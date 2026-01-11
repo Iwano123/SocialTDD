@@ -1,18 +1,12 @@
-import { authenticatedFetch } from '../utils/apiClient';
+import { authenticatedFetch, handleApiResponse } from '../utils/apiClient';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
 export const postsApi = {
   // Hämta tidslinje för en användare
-  async getTimeline(userId) {
+  async getTimeline() {
     const response = await authenticatedFetch(`${API_BASE_URL}/posts/timeline`);
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Kunde inte hämta tidslinje');
-    }
-
-    return await response.json();
+    return await handleApiResponse(response);
   },
 
   // Skapa ett nytt inlägg
@@ -24,12 +18,6 @@ export const postsApi = {
         message: message,
       }),
     });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Kunde inte skapa inlägg');
-    }
-
-    return await response.json();
+    return await handleApiResponse(response);
   },
 };

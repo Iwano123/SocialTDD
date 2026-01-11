@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../services/authApi';
 import { useAuth } from '../contexts/AuthContext';
+import { ApiError, ErrorCodes } from '../utils/ApiError';
 import './Login.css';
 
 function Login() {
@@ -35,7 +36,26 @@ function Login() {
       // Navigera till startsidan
       navigate('/');
     } catch (err) {
-      setError(err.message || 'Inloggning misslyckades. Kontrollera dina uppgifter.');
+      if (err instanceof ApiError) {
+        switch (err.errorCode) {
+          case ErrorCodes.INVALID_CREDENTIALS:
+            setError('Fel användarnamn eller lösenord.');
+            break;
+          case ErrorCodes.VALIDATION_ERROR:
+            setError('Valideringsfel. Kontrollera dina indata.');
+            break;
+          case ErrorCodes.NETWORK_ERROR:
+            setError('Kunde inte ansluta till servern. Kontrollera din internetanslutning.');
+            break;
+          case ErrorCodes.TIMEOUT_ERROR:
+            setError('Begäran tog för lång tid. Försök igen.');
+            break;
+          default:
+            setError(err.message || 'Inloggning misslyckades. Kontrollera dina uppgifter.');
+        }
+      } else {
+        setError(err.message || 'Inloggning misslyckades. Kontrollera dina uppgifter.');
+      }
     } finally {
       setLoading(false);
     }

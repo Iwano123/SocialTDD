@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialTDD.Api.Extensions;
+using SocialTDD.Api.Models;
 using SocialTDD.Application.DTOs;
 using SocialTDD.Application.Interfaces;
 
@@ -45,12 +46,15 @@ public class DirectMessagesController : ControllerBase
         catch (ArgumentException ex)
         {
             _logger.LogWarning("Ogiltigt argument vid skickande av DM: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_RECIPIENT_ID, ex.Message));
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ett oväntat fel uppstod vid skickande av DM");
-            return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
+            return StatusCode(500, new ErrorResponse(
+                ErrorCodes.INTERNAL_SERVER_ERROR, 
+                "Ett oväntat fel uppstod. Försök igen senare."
+            ));
         }
     }
 
@@ -67,12 +71,15 @@ public class DirectMessagesController : ControllerBase
         catch (ArgumentException ex)
         {
             _logger.LogWarning("Ogiltigt argument vid hämtning av DM: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_USER_ID, ex.Message));
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ett oväntat fel uppstod vid hämtning av DM");
-            return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
+            return StatusCode(500, new ErrorResponse(
+                ErrorCodes.INTERNAL_SERVER_ERROR, 
+                "Ett oväntat fel uppstod. Försök igen senare."
+            ));
         }
     }
 
@@ -87,13 +94,15 @@ public class DirectMessagesController : ControllerBase
         catch (ArgumentException ex)
         {
             _logger.LogWarning("Ogiltigt argument vid markering av DM som läst: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.MESSAGE_NOT_FOUND, ex.Message));
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ett oväntat fel uppstod vid markering av DM som läst");
-            return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
+            return StatusCode(500, new ErrorResponse(
+                ErrorCodes.INTERNAL_SERVER_ERROR, 
+                "Ett oväntat fel uppstod. Försök igen senare."
+            ));
         }
     }
 }
-
