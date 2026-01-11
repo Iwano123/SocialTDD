@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialTDD.Api.Extensions;
+using SocialTDD.Api.Models;
 using SocialTDD.Application.DTOs;
 using SocialTDD.Application.Interfaces;
 
@@ -47,12 +48,15 @@ public class PostsController : ControllerBase
         catch (ArgumentException ex)
         {
             _logger.LogWarning("Ogiltigt argument vid skapande av inlägg: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_RECIPIENT_ID, ex.Message));
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ett oväntat fel uppstod vid skapande av inlägg");
-            return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
+            return StatusCode(500, new ErrorResponse(
+                ErrorCodes.INTERNAL_SERVER_ERROR, 
+                "Ett oväntat fel uppstod. Försök igen senare."
+            ));
         }
     }
 
@@ -69,14 +73,15 @@ public class PostsController : ControllerBase
         catch (ArgumentException ex)
         {
             _logger.LogWarning("Ogiltigt argument vid hämtning av tidslinje: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_USER_ID, ex.Message));
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ett oväntat fel uppstod vid hämtning av tidslinje");
-            return StatusCode(500, new { error = "Ett oväntat fel uppstod. Försök igen senare." });
+            return StatusCode(500, new ErrorResponse(
+                ErrorCodes.INTERNAL_SERVER_ERROR, 
+                "Ett oväntat fel uppstod. Försök igen senare."
+            ));
         }
     }
 }
-
-

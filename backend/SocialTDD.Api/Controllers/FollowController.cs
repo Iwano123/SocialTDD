@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialTDD.Api.Extensions;
+using SocialTDD.Api.Models;
 using SocialTDD.Application.DTOs;
 using SocialTDD.Application.Interfaces;
 
@@ -38,15 +39,19 @@ public class FollowController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_USER_ID, ex.Message));
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict(new { message = ex.Message });
+            return Conflict(new ErrorResponse(ErrorCodes.ALREADY_FOLLOWING, ex.Message));
         }
         catch (FluentValidation.ValidationException ex)
         {
-            return BadRequest(new { message = ex.Message, errors = ex.Errors });
+            var details = new Dictionary<string, object>
+            {
+                { "errors", ex.Errors.Select(e => new { property = e.PropertyName, message = e.ErrorMessage }) }
+            };
+            return BadRequest(new ErrorResponse(ErrorCodes.VALIDATION_ERROR, ex.Message, details));
         }
     }
 
@@ -62,7 +67,7 @@ public class FollowController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            return NotFound(new { message = ex.Message });
+            return NotFound(new ErrorResponse(ErrorCodes.USER_NOT_FOUND, ex.Message));
         }
     }
 
@@ -76,7 +81,7 @@ public class FollowController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_USER_ID, ex.Message));
         }
     }
 
@@ -90,7 +95,7 @@ public class FollowController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_USER_ID, ex.Message));
         }
     }
 
@@ -106,7 +111,7 @@ public class FollowController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_USER_ID, ex.Message));
         }
     }
 
@@ -122,7 +127,7 @@ public class FollowController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(new ErrorResponse(ErrorCodes.INVALID_USER_ID, ex.Message));
         }
     }
 }
