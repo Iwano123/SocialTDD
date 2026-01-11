@@ -93,7 +93,7 @@ public class PostServiceTests
     }
 
     [Fact]
-    public async Task CreatePostAsync_SenderAndRecipientSame_ThrowsValidationException()
+    public async Task CreatePostAsync_SenderAndRecipientSame_ThrowsArgumentException()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -104,8 +104,11 @@ public class PostServiceTests
             Message = "Testmeddelande"
         };
 
+        _mockRepository.Setup(r => r.UserExistsAsync(userId)).ReturnsAsync(true);
+
         // Act & Assert
-        await Assert.ThrowsAsync<ValidationException>(() => _postService.CreatePostAsync(request));
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() => _postService.CreatePostAsync(request));
+        exception.Message.Should().Contain("Avsändare och mottagare kan inte vara samma");
         _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Post>()), Times.Never);
     }
 
@@ -155,7 +158,7 @@ public class PostServiceTests
     }
 
     [Fact]
-    public async Task CreatePostAsync_EmptySenderId_ThrowsValidationException()
+    public async Task CreatePostAsync_EmptySenderId_ThrowsArgumentException()
     {
         // Arrange
         var request = new CreatePostRequest
@@ -165,8 +168,12 @@ public class PostServiceTests
             Message = "Testmeddelande"
         };
 
+        _mockRepository.Setup(r => r.UserExistsAsync(Guid.Empty)).ReturnsAsync(false);
+
         // Act & Assert
-        await Assert.ThrowsAsync<ValidationException>(() => _postService.CreatePostAsync(request));
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() => _postService.CreatePostAsync(request));
+        exception.Message.Should().Contain("Avsändare");
+        exception.Message.Should().Contain("finns inte");
         _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Post>()), Times.Never);
     }
 

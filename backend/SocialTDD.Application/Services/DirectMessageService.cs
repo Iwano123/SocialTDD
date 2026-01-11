@@ -44,7 +44,7 @@ public class DirectMessageService : IDirectMessageService
         // Validera att avsändare och mottagare inte är samma
         if (request.SenderId == request.RecipientId)
         {
-            throw new ArgumentException("Avsändare och mottagare kan inte vara samma användare.", nameof(request.RecipientId));
+            throw new ArgumentException("Du kan inte skicka meddelande till dig själv.", nameof(request.RecipientId));
         }
 
         // Skapa direct message

@@ -126,8 +126,16 @@ function FollowPage() {
 
       <div className="lists-section">
         <div className="lists-container">
-          <FollowersList key={`followers-${refreshKey}`} userId={userId} />
-          <FollowingList key={`following-${refreshKey}`} userId={userId} />
+          <FollowersList 
+            key={`followers-${refreshKey}`} 
+            userId={userId}
+            onFollowerClick={handleUserSelect}
+          />
+          <FollowingList 
+            key={`following-${refreshKey}`} 
+            userId={userId}
+            onFollowingClick={handleUserSelect}
+          />
         </div>
       </div>
     </div>

@@ -95,7 +95,7 @@ public class DirectMessageServiceTests
     }
 
     [Fact]
-    public async Task SendDirectMessageAsync_SenderAndRecipientSame_ThrowsValidationException()
+    public async Task SendDirectMessageAsync_SenderAndRecipientSame_ThrowsArgumentException()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -106,8 +106,11 @@ public class DirectMessageServiceTests
             Message = "Testmeddelande"
         };
 
+        _mockRepository.Setup(r => r.UserExistsAsync(userId)).ReturnsAsync(true);
+
         // Act & Assert
-        await Assert.ThrowsAsync<ValidationException>(() => _directMessageService.SendDirectMessageAsync(request));
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() => _directMessageService.SendDirectMessageAsync(request));
+        exception.Message.Should().Contain("kan inte skicka meddelande till dig själv");
         _mockRepository.Verify(r => r.CreateAsync(It.IsAny<DirectMessage>()), Times.Never);
     }
 
@@ -329,7 +332,7 @@ public class DirectMessageServiceTests
     }
 
     [Fact]
-    public async Task SendDirectMessageAsync_EmptySenderId_ThrowsValidationException()
+    public async Task SendDirectMessageAsync_EmptySenderId_ThrowsArgumentException()
     {
         // Arrange
         var request = new CreateDirectMessageRequest
@@ -339,8 +342,12 @@ public class DirectMessageServiceTests
             Message = "Testmeddelande"
         };
 
+        _mockRepository.Setup(r => r.UserExistsAsync(Guid.Empty)).ReturnsAsync(false);
+
         // Act & Assert
-        await Assert.ThrowsAsync<ValidationException>(() => _directMessageService.SendDirectMessageAsync(request));
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() => _directMessageService.SendDirectMessageAsync(request));
+        exception.Message.Should().Contain("Avsändare");
+        exception.Message.Should().Contain("finns inte");
         _mockRepository.Verify(r => r.CreateAsync(It.IsAny<DirectMessage>()), Times.Never);
     }
 

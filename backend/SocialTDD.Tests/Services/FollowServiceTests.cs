@@ -45,7 +45,7 @@ public class FollowServiceTests
         _mockRepository.Setup(r => r.UserExistsAsync(followerId)).ReturnsAsync(true);
         _mockRepository.Setup(r => r.UserExistsAsync(followingId)).ReturnsAsync(true);
         _mockRepository.Setup(r => r.FollowExistsAsync(followerId, followingId)).ReturnsAsync(false);
-        _mockRepository.Setup(r => r.IsCircularFollowAsync(followerId, followingId)).ReturnsAsync(false);
+        // Notera: IsCircularFollowAsync anropas inte längre eftersom ömsesidiga följ-relationer är tillåtna
         _mockRepository.Setup(r => r.CreateAsync(It.IsAny<Follow>())).ReturnsAsync(expectedFollow);
 
         // Act
@@ -60,7 +60,7 @@ public class FollowServiceTests
     }
 
     [Fact]
-    public async Task FollowUserAsync_FollowerAndFollowingSame_ThrowsValidationException()
+    public async Task FollowUserAsync_FollowerAndFollowingSame_ThrowsArgumentException()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -70,13 +70,16 @@ public class FollowServiceTests
             FollowingId = userId
         };
 
+        _mockRepository.Setup(r => r.UserExistsAsync(userId)).ReturnsAsync(true);
+
         // Act & Assert
-        await Assert.ThrowsAsync<ValidationException>(() => _followService.FollowUserAsync(request));
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() => _followService.FollowUserAsync(request));
+        exception.Message.Should().Contain("kan inte följa sig själv");
         _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Follow>()), Times.Never);
     }
 
     [Fact]
-    public async Task FollowUserAsync_EmptyFollowerId_ThrowsValidationException()
+    public async Task FollowUserAsync_EmptyFollowerId_ThrowsArgumentException()
     {
         // Arrange
         var request = new CreateFollowRequest
@@ -85,8 +88,12 @@ public class FollowServiceTests
             FollowingId = Guid.NewGuid()
         };
 
+        _mockRepository.Setup(r => r.UserExistsAsync(Guid.Empty)).ReturnsAsync(false);
+
         // Act & Assert
-        await Assert.ThrowsAsync<ValidationException>(() => _followService.FollowUserAsync(request));
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() => _followService.FollowUserAsync(request));
+        exception.Message.Should().Contain("finns inte");
+        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Follow>()), Times.Never);
     }
 
     [Fact]
@@ -167,9 +174,10 @@ public class FollowServiceTests
     }
 
     [Fact]
-    public async Task FollowUserAsync_CircularFollow_ThrowsInvalidOperationException()
+    public async Task FollowUserAsync_MutualFollow_IsAllowed()
     {
-        // Arrange
+        // Arrange - Test att ömsesidiga följ-relationer är tillåtna
+        // A följer B, och B följer A ska vara tillåtet
         var followerId = Guid.NewGuid();
         var followingId = Guid.NewGuid();
         var request = new CreateFollowRequest
@@ -178,15 +186,28 @@ public class FollowServiceTests
             FollowingId = followingId
         };
 
+        var expectedFollow = new Follow
+        {
+            Id = Guid.NewGuid(),
+            FollowerId = followerId,
+            FollowingId = followingId,
+            CreatedAt = DateTime.UtcNow
+        };
+
         _mockRepository.Setup(r => r.UserExistsAsync(followerId)).ReturnsAsync(true);
         _mockRepository.Setup(r => r.UserExistsAsync(followingId)).ReturnsAsync(true);
         _mockRepository.Setup(r => r.FollowExistsAsync(followerId, followingId)).ReturnsAsync(false);
-        _mockRepository.Setup(r => r.IsCircularFollowAsync(followerId, followingId)).ReturnsAsync(true);
+        // Notera: Vi kontrollerar inte längre IsCircularFollowAsync eftersom ömsesidiga följ-relationer är tillåtna
+        _mockRepository.Setup(r => r.CreateAsync(It.IsAny<Follow>())).ReturnsAsync(expectedFollow);
 
-        // Act & Assert
-        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _followService.FollowUserAsync(request));
-        exception.Message.Should().Contain("Cirkulär");
-        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Follow>()), Times.Never);
+        // Act
+        var result = await _followService.FollowUserAsync(request);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.FollowerId.Should().Be(followerId);
+        result.FollowingId.Should().Be(followingId);
+        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Follow>()), Times.Once);
     }
 
     [Fact]
