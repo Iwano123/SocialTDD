@@ -1,4 +1,4 @@
-import { authenticatedFetch } from '../utils/apiClient';
+import { authenticatedFetch, handleApiResponse } from '../utils/apiClient';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -12,25 +12,13 @@ export const dmApi = {
         message,
       }),
     });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || error.message || 'Kunde inte skicka meddelande');
-    }
-
-    return await response.json();
+    return await handleApiResponse(response);
   },
 
   // Hämta mottagna meddelanden för en användare
-  async getReceivedMessages(userId) {
+  async getReceivedMessages() {
     const response = await authenticatedFetch(`${API_BASE_URL}/directmessages/received`);
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || error.message || 'Kunde inte hämta meddelanden');
-    }
-
-    return await response.json();
+    return await handleApiResponse(response);
   },
 
   // Markera ett meddelande som läst
@@ -38,10 +26,6 @@ export const dmApi = {
     const response = await authenticatedFetch(`${API_BASE_URL}/directmessages/${messageId}/read`, {
       method: 'PUT',
     });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || error.message || 'Kunde inte markera meddelande som läst');
-    }
+    return await handleApiResponse(response);
   },
 };
