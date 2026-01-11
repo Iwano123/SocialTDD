@@ -144,4 +144,62 @@ public class UserService : IUserService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    public async Task<UserResponse?> GetUserByIdAsync(Guid userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            return null;
+        }
+
+        return new UserResponse
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            CreatedAt = user.CreatedAt
+        };
+    }
+
+    public async Task<UserResponse?> GetUserByUsernameAsync(string username)
+    {
+        var user = await _userRepository.GetUserByUsernameAsync(username);
+        if (user == null)
+        {
+            return null;
+        }
+
+        return new UserResponse
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            CreatedAt = user.CreatedAt
+        };
+    }
+
+    public async Task<List<UserResponse>> GetAllUsersAsync()
+    {
+        var users = await _userRepository.GetAllUsersAsync();
+        return users.Select(u => new UserResponse
+        {
+            Id = u.Id,
+            Username = u.Username,
+            Email = u.Email,
+            CreatedAt = u.CreatedAt
+        }).ToList();
+    }
+
+    public async Task<List<UserResponse>> SearchUsersAsync(string searchTerm)
+    {
+        var users = await _userRepository.SearchUsersAsync(searchTerm);
+        return users.Select(u => new UserResponse
+        {
+            Id = u.Id,
+            Username = u.Username,
+            Email = u.Email,
+            CreatedAt = u.CreatedAt
+        }).ToList();
+    }
 }

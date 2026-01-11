@@ -45,4 +45,32 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users.AnyAsync(u => u.Id == userId);
     }
+
+    public async Task<User?> GetByIdAsync(Guid userId)
+    {
+        return await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == userId);
+    }
+
+    public async Task<IEnumerable<User>> GetAllUsersAsync()
+    {
+        return await _context.Users
+            .OrderBy(u => u.Username)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<User>> SearchUsersAsync(string searchTerm)
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            return await GetAllUsersAsync();
+        }
+
+        var lowerSearchTerm = searchTerm.ToLower();
+        return await _context.Users
+            .Where(u => u.Username.ToLower().Contains(lowerSearchTerm) ||
+                       u.Email.ToLower().Contains(lowerSearchTerm))
+            .OrderBy(u => u.Username)
+            .ToListAsync();
+    }
 }
