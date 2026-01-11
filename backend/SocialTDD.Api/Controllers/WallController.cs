@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SocialTDD.Api.Extensions;
 using SocialTDD.Application.DTOs;
 using SocialTDD.Application.Interfaces;
 
@@ -6,6 +8,7 @@ namespace SocialTDD.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class WallController : ControllerBase
 {
     private readonly IWallService _wallService;
@@ -17,11 +20,13 @@ public class WallController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("{userId}")]
-    public async Task<ActionResult<List<PostResponse>>> GetWall(Guid userId)
+    [HttpGet]
+    public async Task<ActionResult<List<PostResponse>>> GetWall()
     {
         try
         {
+            // Hämta UserId från JWT token
+            var userId = User.GetUserId();
             var result = await _wallService.GetWallAsync(userId);
             return Ok(result);
         }

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SocialTDD.Api.Extensions;
 using SocialTDD.Application.DTOs;
 using SocialTDD.Application.Interfaces;
 
@@ -6,6 +8,7 @@ namespace SocialTDD.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class DirectMessagesController : ControllerBase
 {
     private readonly IDirectMessageService _directMessageService;
@@ -25,7 +28,18 @@ public class DirectMessagesController : ControllerBase
         
         try
         {
-            var result = await _directMessageService.SendDirectMessageAsync(request);
+            // Hämta SenderId från JWT token
+            var senderId = User.GetUserId();
+            
+            // Sätt SenderId från token för säkerhet
+            var authenticatedRequest = new CreateDirectMessageRequest
+            {
+                SenderId = senderId,
+                RecipientId = request.RecipientId,
+                Message = request.Message
+            };
+            
+            var result = await _directMessageService.SendDirectMessageAsync(authenticatedRequest);
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -40,11 +54,13 @@ public class DirectMessagesController : ControllerBase
         }
     }
 
-    [HttpGet("received/{userId}")]
-    public async Task<ActionResult<List<DirectMessageResponse>>> GetReceivedMessages(Guid userId)
+    [HttpGet("received")]
+    public async Task<ActionResult<List<DirectMessageResponse>>> GetReceivedMessages()
     {
         try
         {
+            // Hämta UserId från JWT token
+            var userId = User.GetUserId();
             var result = await _directMessageService.GetReceivedMessagesAsync(userId);
             return Ok(result);
         }
