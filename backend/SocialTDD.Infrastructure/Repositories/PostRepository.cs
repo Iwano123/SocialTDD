@@ -50,10 +50,38 @@ public class PostRepository : IPostRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Post>> GetConversationAsync(Guid userId1, Guid userId2)
+    {
+        // Hämta alla meddelanden mellan två användare (båda riktningar)
+        return await _context.Posts
+            .Include(p => p.Sender)
+            .Include(p => p.Recipient)
+            .Where(p => (p.SenderId == userId1 && p.RecipientId == userId2) ||
+                       (p.SenderId == userId2 && p.RecipientId == userId1))
+            .OrderBy(p => p.CreatedAt)
+            .ToListAsync();
+    }
+        public async Task<IEnumerable<Post>> GetPostsBySenderIdsAsync(IEnumerable<Guid> senderIds)
+    {
+        var senderIdsList = senderIds.ToList();
+        if (!senderIdsList.Any())
+        {
+            return Enumerable.Empty<Post>();
+        }
+
+        return await _context.Posts
+            .Include(p => p.Sender)
+            .Include(p => p.Recipient)
+            .Where(p => senderIdsList.Contains(p.SenderId))
+            .ToListAsync();
+    }
+
     public async Task<bool> UserExistsAsync(Guid userId)
     {
         return await _context.Users.AnyAsync(u => u.Id == userId);
     }
 }
+
+
 
 

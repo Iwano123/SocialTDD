@@ -1,0 +1,62 @@
+Summary
+  Generated on: 2026-01-11 - 19:09:31
+  Coverage date: 2026-01-11 - 19:09:19
+  Parser: Cobertura
+  Assemblies: 3
+  Classes: 36
+  Files: 40
+  Line coverage: 28.8%
+  Covered lines: 417
+  Uncovered lines: 1028
+  Coverable lines: 1445
+  Total lines: 2314
+  Branch coverage: 74.4% (67 of 90)
+  Covered branches: 67
+  Total branches: 90
+  Method coverage: 59.8% (82 of 137)
+  Full method coverage: 59.8% (82 of 137)
+  Covered methods: 82
+  Fully covered methods: 82
+  Total methods: 137
+
+SocialTDD.Application                                                     95.6%
+  SocialTDD.Application.Configuration.JwtConfiguration                     100%
+  SocialTDD.Application.DTOs.AuthResponse                                  100%
+  SocialTDD.Application.DTOs.CreateDirectMessageRequest                    100%
+  SocialTDD.Application.DTOs.CreateFollowRequest                           100%
+  SocialTDD.Application.DTOs.CreatePostRequest                             100%
+  SocialTDD.Application.DTOs.DirectMessageResponse                         100%
+  SocialTDD.Application.DTOs.FollowResponse                                100%
+  SocialTDD.Application.DTOs.LoginRequest                                  100%
+  SocialTDD.Application.DTOs.PostResponse                                  100%
+  SocialTDD.Application.DTOs.RegisterRequest                               100%
+  SocialTDD.Application.Services.DirectMessageService                      100%
+  SocialTDD.Application.Services.FollowService                             100%
+  SocialTDD.Application.Services.PostService                              63.2%
+  SocialTDD.Application.Services.TimelineService                           100%
+  SocialTDD.Application.Services.UserService                               100%
+  SocialTDD.Application.Services.WallService                               100%
+  SocialTDD.Application.Validators.CreateDirectMessageRequestValidator     100%
+  SocialTDD.Application.Validators.CreateFollowRequestValidator            100%
+  SocialTDD.Application.Validators.CreatePostRequestValidator              100%
+  SocialTDD.Application.Validators.LoginRequestValidator                   100%
+  SocialTDD.Application.Validators.RegisterRequestValidator                100%
+
+SocialTDD.Domain                                                          84.6%
+  SocialTDD.Domain.Entities.DirectMessage                                   75%
+  SocialTDD.Domain.Entities.Follow                                        66.6%
+  SocialTDD.Domain.Entities.Post                                           100%
+  SocialTDD.Domain.Entities.User                                           100%
+
+SocialTDD.Infrastructure                                                     0%
+  SocialTDD.Infrastructure.Data.ApplicationDbContext                         0%
+  SocialTDD.Infrastructure.Data.ApplicationDbContextFactory                  0%
+  SocialTDD.Infrastructure.Migrations.AddDirectMessageEntity                 0%
+  SocialTDD.Infrastructure.Migrations.AddFollowEntity                        0%
+  SocialTDD.Infrastructure.Migrations.AddPasswordHashToUser                  0%
+  SocialTDD.Infrastructure.Migrations.ApplicationDbContextModelSnapshot      0%
+  SocialTDD.Infrastructure.Migrations.InitialCreate                          0%
+  SocialTDD.Infrastructure.Repositories.DirectMessageRepository              0%
+  SocialTDD.Infrastructure.Repositories.FollowRepository                     0%
+  SocialTDD.Infrastructure.Repositories.PostRepository                       0%
+  SocialTDD.Infrastructure.Repositories.UserRepository                       0%

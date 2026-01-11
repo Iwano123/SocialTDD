@@ -185,6 +185,40 @@ public class PostServiceTests
         await Assert.ThrowsAsync<ValidationException>(() => _postService.CreatePostAsync(request));
         _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Post>()), Times.Never);
     }
+
+    [Fact]
+    public async Task CreatePostAsync_MessageWithOnlyWhitespace_ThrowsValidationException()
+    {
+        // Arrange
+        var request = new CreatePostRequest
+        {
+            SenderId = Guid.NewGuid(),
+            RecipientId = Guid.NewGuid(),
+            Message = "   " // Bara mellanslag
+        };
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _postService.CreatePostAsync(request));
+        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Post>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task CreatePostAsync_NullMessage_ThrowsValidationException()
+    {
+        // Arrange
+        var request = new CreatePostRequest
+        {
+            SenderId = Guid.NewGuid(),
+            RecipientId = Guid.NewGuid(),
+            Message = null!
+        };
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _postService.CreatePostAsync(request));
+        _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Post>()), Times.Never);
+    }
 }
+
+
 
 
