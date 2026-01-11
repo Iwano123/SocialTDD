@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SocialTDD.Api.Extensions;
 using SocialTDD.Application.DTOs;
 using SocialTDD.Application.Interfaces;
 
@@ -6,6 +8,7 @@ namespace SocialTDD.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PostsController : ControllerBase
 {
     private readonly IPostService _postService;
@@ -27,7 +30,18 @@ public class PostsController : ControllerBase
         
         try
         {
-            var result = await _postService.CreatePostAsync(request);
+            // Hämta UserId från JWT token
+            var userId = User.GetUserId();
+            
+            // Sätt SenderId från token för säkerhet
+            var authenticatedRequest = new CreatePostRequest
+            {
+                SenderId = userId,
+                RecipientId = request.RecipientId,
+                Message = request.Message
+            };
+            
+            var result = await _postService.CreatePostAsync(authenticatedRequest);
             return Ok(result);
         }
         catch (ArgumentException ex)
@@ -42,11 +56,13 @@ public class PostsController : ControllerBase
         }
     }
 
-    [HttpGet("timeline/{userId}")]
-    public async Task<ActionResult<List<PostResponse>>> GetTimeline(Guid userId)
+    [HttpGet("timeline")]
+    public async Task<ActionResult<List<PostResponse>>> GetTimeline()
     {
         try
         {
+            // Hämta UserId från JWT token
+            var userId = User.GetUserId();
             var result = await _timelineService.GetTimelineAsync(userId);
             return Ok(result);
         }

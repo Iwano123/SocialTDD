@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
         catch (ArgumentException ex)
         {
             _logger.LogWarning("Ogiltigt argument vid registrering: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message });
+            return Conflict(new { error = ex.Message });
         }
         catch (Exception ex)
         {
