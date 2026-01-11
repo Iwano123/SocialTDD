@@ -66,7 +66,7 @@ function SendDirectMessage({ senderId, onMessageSent }) {
       setError(null);
       setSuccess(false);
 
-      await dmApi.sendDirectMessage(senderId, recipientId.trim(), message.trim());
+      await dmApi.sendDirectMessage(recipientId.trim(), message.trim());
 
       setSuccess(true);
       setMessage('');

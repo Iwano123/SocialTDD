@@ -34,7 +34,7 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
     try {
       setLoading(true);
       setError(null);
-      await followApi.followUser(followerId, followingId);
+      await followApi.followUser(followingId);
       setIsFollowing(true);
       if (onFollowChange) {
         onFollowChange(true);
@@ -50,7 +50,7 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
     try {
       setLoading(true);
       setError(null);
-      await followApi.unfollowUser(followerId, followingId);
+      await followApi.unfollowUser(followingId);
       setIsFollowing(false);
       if (onFollowChange) {
         onFollowChange(false);

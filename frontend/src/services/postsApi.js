@@ -1,9 +1,11 @@
+import { authenticatedFetch } from '../utils/apiClient';
+
 const API_BASE_URL = 'http://localhost:5000/api';
 
 export const postsApi = {
   // Hämta tidslinje för en användare
   async getTimeline(userId) {
-    const response = await fetch(`${API_BASE_URL}/posts/timeline/${userId}`);
+    const response = await authenticatedFetch(`${API_BASE_URL}/posts/timeline`);
 
     if (!response.ok) {
       const error = await response.json();
@@ -14,14 +16,10 @@ export const postsApi = {
   },
 
   // Skapa ett nytt inlägg
-  async createPost(senderId, recipientId, message) {
-    const response = await fetch(`${API_BASE_URL}/posts`, {
+  async createPost(recipientId, message) {
+    const response = await authenticatedFetch(`${API_BASE_URL}/posts`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
-        senderId: senderId,
         recipientId: recipientId,
         message: message,
       }),

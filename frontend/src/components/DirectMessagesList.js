@@ -16,7 +16,7 @@ function DirectMessagesList({ userId }) {
     try {
       setLoading(true);
       setError(null);
-      const receivedMessages = await dmApi.getReceivedMessages(userId);
+      const receivedMessages = await dmApi.getReceivedMessages();
       // Sortera meddelanden så att nyaste kommer först
       const sortedMessages = receivedMessages.sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt);
