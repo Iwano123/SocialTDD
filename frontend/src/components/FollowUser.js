@@ -77,6 +77,11 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
             setError('Begäran tog för lång tid.');
             break;
           case ErrorCodes.ALREADY_FOLLOWING:
+            // Om användaren redan följer, uppdatera ändå statusen och trigga refresh
+            setIsFollowing(true);
+            if (onFollowChange) {
+              onFollowChange(true);
+            }
             setError('Du följer redan denna användare.');
             break;
           case ErrorCodes.INVALID_USER_ID:

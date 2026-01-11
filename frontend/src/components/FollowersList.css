@@ -6,10 +6,58 @@
   margin-bottom: 20px;
 }
 
+.followers-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
 .followers-list h3 {
-  margin: 0 0 16px 0;
+  margin: 0;
   color: #333;
   font-size: 20px;
+}
+
+.refresh-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.refresh-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.refresh-icon {
+  font-size: 18px;
+  color: #666;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.refresh-icon.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading,
@@ -51,6 +99,28 @@
 
 .follower-item:hover {
   background-color: #f8f9fa;
+}
+
+.follower-item-clickable {
+  position: relative;
+}
+
+.follower-item-clickable:hover {
+  background-color: #e3f2fd;
+  border-left: 3px solid #2196f3;
+}
+
+.follower-action-hint {
+  font-size: 12px;
+  color: #2196f3;
+  margin-top: 4px;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.follower-item-clickable:hover .follower-action-hint {
+  opacity: 1;
 }
 
 .follower-info {

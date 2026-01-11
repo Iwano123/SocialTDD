@@ -53,7 +53,7 @@ public class DirectMessagesController : ControllerBase
             {
                 SenderId = senderId,
                 RecipientId = request.RecipientId,
-                Message = request.Message
+                Message = request.Message ?? string.Empty
             };
             
             var result = await _directMessageService.SendDirectMessageAsync(authenticatedRequest);
