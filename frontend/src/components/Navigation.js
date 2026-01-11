@@ -31,6 +31,12 @@ function Navigation() {
       >
         Direktmeddelanden
       </Link>
+      <Link 
+        to="/create-post" 
+        className={location.pathname === '/create-post' ? 'nav-link active' : 'nav-link'}
+      >
+        Skapa inlägg
+      </Link>
     </nav>
   );
 }
