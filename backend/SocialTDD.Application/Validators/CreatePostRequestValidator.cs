@@ -10,13 +10,7 @@ public class CreatePostRequestValidator : AbstractValidator<CreatePostRequest>
 
     public CreatePostRequestValidator()
     {
-        // Validera SenderId
-        RuleFor(x => x.SenderId)
-            .NotEmpty()
-            .WithMessage("Avsändare-ID är obligatoriskt.")
-            .NotEqual(Guid.Empty)
-            .WithMessage("Avsändare-ID får inte vara tomt.");
-
+        // SenderId valideras inte här eftersom den sätts från JWT token i controllern
         // Validera RecipientId
         RuleFor(x => x.RecipientId)
             .NotEmpty()
@@ -24,10 +18,8 @@ public class CreatePostRequestValidator : AbstractValidator<CreatePostRequest>
             .NotEqual(Guid.Empty)
             .WithMessage("Mottagare-ID får inte vara tomt.");
 
-        // Validera att avsändare och mottagare inte är samma
-        RuleFor(x => x.SenderId)
-            .NotEqual(x => x.RecipientId)
-            .WithMessage("Avsändare och mottagare kan inte vara samma användare.");
+        // Validera att avsändare och mottagare inte är samma (valideras i service layer)
+        // Detta valideras i service layer efter att SenderId har satts från token
 
         // Validera Message
         RuleFor(x => x.Message)

@@ -33,6 +33,11 @@
   font-size: 14px;
 }
 
+.required-asterisk {
+  color: #dc3545;
+  margin-left: 4px;
+}
+
 .send-dm-input,
 .send-dm-textarea {
   padding: 12px;
@@ -61,11 +66,41 @@
   min-height: 100px;
 }
 
+.send-dm-textarea.input-error {
+  border-color: #dc3545;
+}
+
+.send-dm-textarea.input-error:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+}
+
 .send-dm-character-count {
   font-size: 12px;
   color: #666;
   text-align: right;
   margin-top: 4px;
+}
+
+.character-count-error {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+.field-error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.selected-user-info {
+  margin-top: 8px;
+  padding: 8px;
+  background-color: #e7f3ff;
+  border: 1px solid #b3d9ff;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #004085;
 }
 
 .send-dm-button {
