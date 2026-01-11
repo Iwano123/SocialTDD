@@ -33,7 +33,27 @@ SocialTDD/
 
 ## 🚀 Setup
 
-### Backend
+### Snabbstart (Rekommenderat)
+
+Starta både backend och frontend med ett enda kommando:
+
+**PowerShell:**
+```powershell
+.\start.ps1
+```
+
+**Command Prompt:**
+```cmd
+start.bat
+```
+
+Detta startar båda servrarna i separata fönster:
+- Backend: http://localhost:5000
+- Frontend: http://localhost:3000
+
+### Manuell start
+
+#### Backend
 
 1. Restore dependencies:
    ```bash
@@ -44,7 +64,7 @@ SocialTDD/
    ```json
    {
      "ConnectionStrings": {
-       "DefaultConnection": "Server=localhost;Database=SocialTDD;Trusted_Connection=True;TrustServerCertificate=True;"
+       "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=SocialTDD;Trusted_Connection=true;MultipleActiveResultSets=true"
      }
    }
    ```

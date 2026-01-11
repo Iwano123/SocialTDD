@@ -24,13 +24,29 @@ public class DirectMessagesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DirectMessageResponse>> SendDirectMessage([FromBody] CreateDirectMessageRequest request)
     {
-        // Validering sker automatiskt via FluentValidation.AspNetCore
-        // Om valideringen misslyckas returneras automatiskt BadRequest med felmeddelanden
-        
         try
         {
+            _logger.LogInformation("SendDirectMessage endpoint anropad. User authenticated: {IsAuthenticated}", User.Identity?.IsAuthenticated);
+            
+            if (request == null)
+            {
+                _logger.LogWarning("SendDirectMessage anropad utan request body");
+                return BadRequest(new ErrorResponse(ErrorCodes.VALIDATION_ERROR, "Request body saknas."));
+            }
+            
+            _logger.LogInformation("Request body: RecipientId={RecipientId}, Message length={MessageLength}", 
+                request.RecipientId, request.Message?.Length ?? 0);
+            
             // Hämta SenderId från JWT token
             var senderId = User.GetUserId();
+            _logger.LogInformation("SenderId från token: {SenderId}, RecipientId från request: {RecipientId}", senderId, request.RecipientId);
+            
+            // Kontrollera om RecipientId är tomt eller ogiltigt
+            if (request.RecipientId == Guid.Empty)
+            {
+                _logger.LogWarning("RecipientId är tomt eller ogiltigt. RecipientId: {RecipientId}", request.RecipientId);
+                return BadRequest(new ErrorResponse(ErrorCodes.INVALID_RECIPIENT_ID, "RecipientId är obligatoriskt och måste vara ett giltigt användar-ID."));
+            }
             
             // Sätt SenderId från token för säkerhet
             var authenticatedRequest = new CreateDirectMessageRequest
@@ -43,14 +59,29 @@ public class DirectMessagesController : ControllerBase
             var result = await _directMessageService.SendDirectMessageAsync(authenticatedRequest);
             return Ok(result);
         }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogWarning(ex, "Autentiseringsfel vid skickande av DM");
+            return Unauthorized(new ErrorResponse(ErrorCodes.UNAUTHORIZED, ex.Message));
+        }
         catch (ArgumentException ex)
         {
             _logger.LogWarning("Ogiltigt argument vid skickande av DM: {Message}", ex.Message);
             return BadRequest(new ErrorResponse(ErrorCodes.INVALID_RECIPIENT_ID, ex.Message));
         }
+        catch (FluentValidation.ValidationException ex)
+        {
+            _logger.LogWarning("Valideringsfel vid skickande av DM: {Message}", ex.Message);
+            var details = new Dictionary<string, object>
+            {
+                { "errors", ex.Errors.Select(e => new { property = e.PropertyName, message = e.ErrorMessage }) }
+            };
+            return BadRequest(new ErrorResponse(ErrorCodes.VALIDATION_ERROR, ex.Message, details));
+        }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Ett oväntat fel uppstod vid skickande av DM");
+            _logger.LogError(ex, "Ett oväntat fel uppstod vid skickande av DM. Request: RecipientId={RecipientId}, Message length={MessageLength}", 
+                request?.RecipientId, request?.Message?.Length ?? 0);
             return StatusCode(500, new ErrorResponse(
                 ErrorCodes.INTERNAL_SERVER_ERROR, 
                 "Ett oväntat fel uppstod. Försök igen senare."

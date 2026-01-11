@@ -51,6 +51,14 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
     try {
       setLoading(true);
       setError(null);
+      
+      // Validera att followingId finns och är giltigt
+      if (!followingId) {
+        setError('Ogiltigt användar-ID.');
+        setLoading(false);
+        return;
+      }
+      
       await followApi.followUser(followingId);
       setIsFollowing(true);
       if (onFollowChange) {
@@ -73,6 +81,9 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
             break;
           case ErrorCodes.INVALID_USER_ID:
             setError('Ogiltigt användar-ID.');
+            break;
+          case ErrorCodes.INTERNAL_SERVER_ERROR:
+            setError('Ett serverfel uppstod. Försök igen senare.');
             break;
           default:
             setError(err.message || 'Kunde inte följa användare');
@@ -119,6 +130,11 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
       setLoading(false);
     }
   };
+
+  // Validera att både followerId och followingId finns
+  if (!followerId || !followingId) {
+    return <div className="follow-user-error">Ogiltiga användar-ID:n</div>;
+  }
 
   if (checkingStatus) {
     return <div className="follow-user-loading">Kontrollerar status...</div>;

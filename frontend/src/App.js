@@ -88,7 +88,11 @@ function FollowPage() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleUserSelect = (user) => {
-    setTargetUserId(user.id);
+    if (user) {
+      setTargetUserId(user.id);
+    } else {
+      setTargetUserId(null);
+    }
   };
 
   const handleFollowChange = () => {
