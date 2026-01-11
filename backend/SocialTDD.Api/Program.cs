@@ -2,7 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using SocialTDD.Application.Configuration;
@@ -114,6 +114,9 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "SocialTDD API v1");
         c.RoutePrefix = string.Empty; // Swagger UI på root
     });
+    
+    // Detailed error pages in development
+    app.UseDeveloperExceptionPage();
 }
 else
 {
