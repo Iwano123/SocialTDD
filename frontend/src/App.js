@@ -7,6 +7,7 @@ import FollowingList from './components/FollowingList';
 import Timeline from './components/Timeline';
 import Wall from './components/Wall';
 import DirectMessages from './components/DirectMessages';
+import CreatePost from './components/CreatePost';
 import './App.css';
 
 function App() {
@@ -75,6 +76,21 @@ function App() {
                   <DirectMessages userId={currentUserId} />
                 ) : (
                   <div className="empty-state">Ange ditt användar-ID för att se meddelanden</div>
+                )
+              } 
+            />
+            <Route 
+              path="/create-post" 
+              element={
+                currentUserId ? (
+                  <CreatePost 
+                    senderId={currentUserId} 
+                    onPostCreated={() => {
+                      console.log('Nytt inlägg skapat!');
+                    }}
+                  />
+                ) : (
+                  <div className="empty-state">Ange ditt användar-ID för att skapa inlägg</div>
                 )
               } 
             />
