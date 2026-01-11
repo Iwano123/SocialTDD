@@ -27,8 +27,8 @@ public class AuthController : ControllerBase
         }
         catch (FluentValidation.ValidationException ex)
         {
-            _logger.LogWarning("Valideringsfel vid registrering: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message, errors = ex.Errors });
+            _logger.LogWarning("Valideringsfel vid registrering: {Errors}", ex.Errors);
+            return BadRequest(new { errors = ex.Errors.Select(e => new { property = e.PropertyName, message = e.ErrorMessage }) });
         }
         catch (ArgumentException ex)
         {
@@ -52,8 +52,8 @@ public class AuthController : ControllerBase
         }
         catch (FluentValidation.ValidationException ex)
         {
-            _logger.LogWarning("Valideringsfel vid inloggning: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message, errors = ex.Errors });
+            _logger.LogWarning("Valideringsfel vid inloggning: {Errors}", ex.Errors);
+            return BadRequest(new { errors = ex.Errors.Select(e => new { property = e.PropertyName, message = e.ErrorMessage }) });
         }
         catch (ArgumentException ex)
         {

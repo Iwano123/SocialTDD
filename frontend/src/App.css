@@ -68,18 +68,24 @@
   border-top: 1px solid #eee;
 }
 
+.content-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wall-section {
+  width: 100%;
+}
+
 .lists-section {
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 .lists-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 20px;
-}
-
-.dm-section {
-  margin-top: 30px;
 }
 
 @media (max-width: 768px) {
@@ -90,4 +96,14 @@
   .App-header h1 {
     font-size: 2rem;
   }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: white;
+  font-size: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-top: 20px;
 }
