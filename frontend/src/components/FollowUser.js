@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { followApi } from '../services/followApi';
+import { ApiError, ErrorCodes } from '../utils/ApiError';
 import './FollowUser.css';
 
 function FollowUser({ followerId, followingId, onFollowChange }) {
@@ -19,7 +20,23 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
         );
         setIsFollowing(isCurrentlyFollowing);
       } catch (err) {
-        setError(err.message);
+        if (err instanceof ApiError) {
+          switch (err.errorCode) {
+            case ErrorCodes.TOKEN_EXPIRED:
+              setError('Din session har gått ut. Logga in igen.');
+              break;
+            case ErrorCodes.NETWORK_ERROR:
+              setError('Kunde inte ansluta till servern.');
+              break;
+            case ErrorCodes.TIMEOUT_ERROR:
+              setError('Begäran tog för lång tid.');
+              break;
+            default:
+              setError(err.message || 'Kunde inte kontrollera följstatus');
+          }
+        } else {
+          setError(err.message || 'Kunde inte kontrollera följstatus');
+        }
       } finally {
         setCheckingStatus(false);
       }
@@ -40,7 +57,29 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
         onFollowChange(true);
       }
     } catch (err) {
-      setError(err.message);
+      if (err instanceof ApiError) {
+        switch (err.errorCode) {
+          case ErrorCodes.TOKEN_EXPIRED:
+            setError('Din session har gått ut. Logga in igen.');
+            break;
+          case ErrorCodes.NETWORK_ERROR:
+            setError('Kunde inte ansluta till servern.');
+            break;
+          case ErrorCodes.TIMEOUT_ERROR:
+            setError('Begäran tog för lång tid.');
+            break;
+          case ErrorCodes.ALREADY_FOLLOWING:
+            setError('Du följer redan denna användare.');
+            break;
+          case ErrorCodes.INVALID_USER_ID:
+            setError('Ogiltigt användar-ID.');
+            break;
+          default:
+            setError(err.message || 'Kunde inte följa användare');
+        }
+      } else {
+        setError(err.message || 'Kunde inte följa användare');
+      }
     } finally {
       setLoading(false);
     }
@@ -56,7 +95,26 @@ function FollowUser({ followerId, followingId, onFollowChange }) {
         onFollowChange(false);
       }
     } catch (err) {
-      setError(err.message);
+      if (err instanceof ApiError) {
+        switch (err.errorCode) {
+          case ErrorCodes.TOKEN_EXPIRED:
+            setError('Din session har gått ut. Logga in igen.');
+            break;
+          case ErrorCodes.NETWORK_ERROR:
+            setError('Kunde inte ansluta till servern.');
+            break;
+          case ErrorCodes.TIMEOUT_ERROR:
+            setError('Begäran tog för lång tid.');
+            break;
+          case ErrorCodes.USER_NOT_FOUND:
+            setError('Användaren kunde inte hittas.');
+            break;
+          default:
+            setError(err.message || 'Kunde inte avfölja användare');
+        }
+      } else {
+        setError(err.message || 'Kunde inte avfölja användare');
+      }
     } finally {
       setLoading(false);
     }

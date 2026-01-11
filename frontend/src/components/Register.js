@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../services/authApi';
 import { useAuth } from '../contexts/AuthContext';
+import { ApiError, ErrorCodes } from '../utils/ApiError';
 import './Register.css';
 
 function Register() {
@@ -81,7 +82,46 @@ function Register() {
       // Navigera till startsidan
       navigate('/');
     } catch (err) {
-      setError(err.message || 'Registrering misslyckades. Försök igen.');
+      if (err instanceof ApiError) {
+        switch (err.errorCode) {
+          case ErrorCodes.USER_ALREADY_EXISTS:
+            setError('Användarnamnet eller e-postadressen är redan registrerad.');
+            break;
+          case ErrorCodes.VALIDATION_ERROR:
+            // Hantera valideringsfel från backend
+            if (err.details && err.details.errors) {
+              const backendErrors = {};
+              err.details.errors.forEach((error) => {
+                if (error.property === 'Username') {
+                  backendErrors.username = error.message;
+                } else if (error.property === 'Email') {
+                  backendErrors.email = error.message;
+                } else if (error.property === 'Password') {
+                  backendErrors.password = error.message;
+                }
+              });
+              if (Object.keys(backendErrors).length > 0) {
+                setValidationErrors(backendErrors);
+                setError('Korrigera felen ovan.');
+              } else {
+                setError('Valideringsfel. Kontrollera dina indata.');
+              }
+            } else {
+              setError('Valideringsfel. Kontrollera dina indata.');
+            }
+            break;
+          case ErrorCodes.NETWORK_ERROR:
+            setError('Kunde inte ansluta till servern. Kontrollera din internetanslutning.');
+            break;
+          case ErrorCodes.TIMEOUT_ERROR:
+            setError('Begäran tog för lång tid. Försök igen.');
+            break;
+          default:
+            setError(err.message || 'Registrering misslyckades. Försök igen.');
+        }
+      } else {
+        setError(err.message || 'Registrering misslyckades. Försök igen.');
+      }
     } finally {
       setLoading(false);
     }
