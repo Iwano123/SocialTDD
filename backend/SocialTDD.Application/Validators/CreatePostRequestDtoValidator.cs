@@ -3,23 +3,19 @@ using SocialTDD.Application.DTOs;
 
 namespace SocialTDD.Application.Validators;
 
-public class CreatePostRequestValidator : AbstractValidator<CreatePostRequest>
+public class CreatePostRequestDtoValidator : AbstractValidator<CreatePostRequestDto>
 {
     private const int MaxMessageLength = 500;
     private const int MinMessageLength = 1;
 
-    public CreatePostRequestValidator()
+    public CreatePostRequestDtoValidator()
     {
-        // SenderId valideras inte här eftersom den sätts från JWT token i controllern
         // Validera RecipientId
         RuleFor(x => x.RecipientId)
             .NotEmpty()
             .WithMessage("Mottagare-ID är obligatoriskt.")
             .NotEqual(Guid.Empty)
             .WithMessage("Mottagare-ID får inte vara tomt.");
-
-        // Validera att avsändare och mottagare inte är samma (valideras i service layer)
-        // Detta valideras i service layer efter att SenderId har satts från token
 
         // Validera Message
         RuleFor(x => x.Message)
@@ -35,7 +31,3 @@ public class CreatePostRequestValidator : AbstractValidator<CreatePostRequest>
             .WithMessage($"Meddelande måste vara minst {MinMessageLength} tecken efter borttagning av mellanslag.");
     }
 }
-
-
-
-
