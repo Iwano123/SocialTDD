@@ -11,12 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Fix react-scripts permissions
-        run: chmod +x node_modules/.bin/react-scripts
-  
       - name: Install Node
         uses: actions/setup-node@v4
         with:
@@ -24,10 +18,10 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./frontend
-        run: npm install
+        run: npm ci
 
       - name: Run tests
         working-directory: ./frontend
         env:
           CI: true
-        run: npx --yes react-scripts test --watchAll=false --passWithNoTests
+        run: npm test -- --watchAll=false --passWithNoTests
