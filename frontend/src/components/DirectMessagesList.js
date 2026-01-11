@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { dmApi } from '../services/dmApi';
+import { userApi } from '../services/userApi';
 import './DirectMessagesList.css';
 
 function DirectMessagesList({ userId }) {
   const [messages, setMessages] = useState([]);
+  const [usernames, setUsernames] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [markingAsRead, setMarkingAsRead] = useState(null);
@@ -22,6 +24,27 @@ function DirectMessagesList({ userId }) {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
       setMessages(sortedMessages);
+
+      // Hämta användarnamn för alla unika avsändare
+      const uniqueSenderIds = new Set();
+      sortedMessages.forEach(msg => {
+        if (msg.senderId) uniqueSenderIds.add(msg.senderId);
+      });
+
+      const usernameMap = {};
+      await Promise.all(
+        Array.from(uniqueSenderIds).map(async (id) => {
+          try {
+            const user = await userApi.getUserById(id);
+            if (user) {
+              usernameMap[id] = user.username;
+            }
+          } catch (err) {
+            console.error(`Kunde inte hämta användare ${id}:`, err);
+          }
+        })
+      );
+      setUsernames(usernameMap);
     } catch (err) {
       setError(err.message || 'Kunde inte hämta meddelanden');
     } finally {
@@ -131,7 +154,7 @@ function DirectMessagesList({ userId }) {
             >
               <div className="dm-message-header">
                 <div className="dm-message-sender">
-                  Från: {message.senderId}
+                  Från: {usernames[message.senderId] || message.senderId}
                 </div>
                 <div className="dm-message-date">
                   {formatDate(message.createdAt)}

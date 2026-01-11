@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { wallApi } from '../services/wallApi';
+import { userApi } from '../services/userApi';
 import './Wall.css';
 
 function Wall({ userId }) {
   const [posts, setPosts] = useState([]);
+  const [usernames, setUsernames] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -21,6 +23,28 @@ function Wall({ userId }) {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
       setPosts(sortedPosts);
+
+      // Hämta användarnamn för alla unika användar-ID:n
+      const uniqueUserIds = new Set();
+      sortedPosts.forEach(post => {
+        if (post.senderId) uniqueUserIds.add(post.senderId);
+        if (post.recipientId) uniqueUserIds.add(post.recipientId);
+      });
+
+      const usernameMap = {};
+      await Promise.all(
+        Array.from(uniqueUserIds).map(async (id) => {
+          try {
+            const user = await userApi.getUserById(id);
+            if (user) {
+              usernameMap[id] = user.username;
+            }
+          } catch (err) {
+            console.error(`Kunde inte hämta användare ${id}:`, err);
+          }
+        })
+      );
+      setUsernames(usernameMap);
     } catch (err) {
       setError(err.message || 'Kunde inte hämta vägg');
     } finally {
@@ -94,13 +118,13 @@ function Wall({ userId }) {
           {posts.map((post) => (
             <div key={post.id} className="post-card">
               <div className="post-header">
-                <span className="post-sender">Från: {post.senderId}</span>
+                <span className="post-sender">Från: {usernames[post.senderId] || post.senderId}</span>
                 <span className="post-date">{formatDate(post.createdAt)}</span>
               </div>
               <div className="post-message">{post.message}</div>
               {post.recipientId && (
                 <div className="post-footer">
-                  <span className="post-recipient">Till: {post.recipientId}</span>
+                  <span className="post-recipient">Till: {usernames[post.recipientId] || post.recipientId}</span>
                 </div>
               )}
             </div>

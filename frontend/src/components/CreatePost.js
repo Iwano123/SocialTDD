@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { postsApi } from '../services/postsApi';
 import { ApiError, ErrorCodes } from '../utils/ApiError';
+import UserSearch from './UserSearch';
 import './CreatePost.css';
 
 function CreatePost({ senderId, onPostCreated }) {
@@ -13,19 +14,24 @@ function CreatePost({ senderId, onPostCreated }) {
   const MAX_MESSAGE_LENGTH = 500;
   const MIN_MESSAGE_LENGTH = 1;
 
+  const handleUserSelect = (user) => {
+    setRecipientId(user.id);
+    setError(null);
+  };
+
   const validateForm = () => {
     setError(null);
 
     // Validera recipientId
     if (!recipientId || recipientId.trim() === '') {
-      setError('Mottagare-ID är obligatoriskt.');
+      setError('Mottagare är obligatoriskt.');
       return false;
     }
 
     // Validera att recipientId är en giltig GUID
     const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!guidRegex.test(recipientId.trim())) {
-      setError('Mottagare-ID måste vara ett giltigt GUID.');
+      setError('Ogiltigt användar-ID.');
       return false;
     }
 
@@ -147,20 +153,12 @@ function CreatePost({ senderId, onPostCreated }) {
       <form onSubmit={handleSubmit} className="create-post-form">
         <div className="create-post-field">
           <label htmlFor="recipientId" className="create-post-label">
-            Mottagare-ID (GUID)
+            Mottagare
           </label>
-          <input
-            type="text"
-            id="recipientId"
-            value={recipientId}
-            onChange={(e) => {
-              setRecipientId(e.target.value);
-              setError(null);
-            }}
-            placeholder="Ange mottagarens GUID"
-            className="create-post-input"
-            disabled={loading}
-            required
+          <UserSearch
+            onUserSelect={handleUserSelect}
+            placeholder="Sök efter användare..."
+            excludeUserId={senderId}
           />
         </div>
 
