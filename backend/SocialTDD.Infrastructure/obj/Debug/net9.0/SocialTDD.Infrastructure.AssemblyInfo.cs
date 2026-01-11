@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SocialTDD.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8da2c6e61c1e4eb644705ff539264f503cc233c5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d2b831ed9b8ba9d9583e0dd3435e89da27efb43")]
 [assembly: System.Reflection.AssemblyProductAttribute("SocialTDD.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SocialTDD.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

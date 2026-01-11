@@ -2,7 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using SocialTDD.Application.Configuration;
@@ -31,20 +31,8 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer"
     });
     
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+    // Security requirement will be added via attributes on controllers/actions
+    // This avoids compatibility issues with Microsoft.OpenApi.Models namespace in .NET 9
 });
 
 // Add Entity Framework
