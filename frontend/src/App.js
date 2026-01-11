@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Navigation from './components/Navigation';
+import Login from './components/Login';
+import Register from './components/Register';
+import ProtectedRoute from './components/ProtectedRoute';
 import FollowUser from './components/FollowUser';
 import FollowersList from './components/FollowersList';
 import FollowingList from './components/FollowingList';
@@ -11,98 +15,73 @@ import CreatePost from './components/CreatePost';
 import './App.css';
 
 function App() {
-  const [currentUserId, setCurrentUserId] = useState('');
-
   return (
-    <Router>
-      <div className="App">
-        <header className="App-header">
-          <h1>SocialTDD</h1>
-          <p>Socialt nätverk</p>
-        </header>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <header className="App-header">
+            <h1>SocialTDD</h1>
+            <p>Socialt nätverk</p>
+          </header>
 
-        <main className="App-main">
-          <div className="user-input-section">
-            <div className="input-group">
-              <label htmlFor="currentUserId">Ditt användar-ID:</label>
-              <input
-                id="currentUserId"
-                type="text"
-                value={currentUserId}
-                onChange={(e) => setCurrentUserId(e.target.value)}
-                placeholder="Ange ditt användar-ID"
-                className="user-input"
+          <main className="App-main">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <FollowPage />
+                  </ProtectedRoute>
+                }
               />
-            </div>
-          </div>
-
-          {currentUserId && <Navigation />}
-
-          <Routes>
-            <Route 
-              path="/" 
-              element={
-                currentUserId ? (
-                  <FollowPage currentUserId={currentUserId} />
-                ) : (
-                  <div className="empty-state">Ange ditt användar-ID för att börja</div>
-                )
-              } 
-            />
-            <Route 
-              path="/timeline" 
-              element={
-                currentUserId ? (
-                  <Timeline userId={currentUserId} />
-                ) : (
-                  <div className="empty-state">Ange ditt användar-ID för att se tidslinje</div>
-                )
-              } 
-            />
-            <Route 
-              path="/wall" 
-              element={
-                currentUserId ? (
-                  <Wall userId={currentUserId} />
-                ) : (
-                  <div className="empty-state">Ange ditt användar-ID för att se vägg</div>
-                )
-              } 
-            />
-            <Route 
-              path="/messages" 
-              element={
-                currentUserId ? (
-                  <DirectMessages userId={currentUserId} />
-                ) : (
-                  <div className="empty-state">Ange ditt användar-ID för att se meddelanden</div>
-                )
-              } 
-            />
-            <Route 
-              path="/create-post" 
-              element={
-                currentUserId ? (
-                  <CreatePost 
-                    senderId={currentUserId} 
-                    onPostCreated={() => {
-                      console.log('Nytt inlägg skapat!');
-                    }}
-                  />
-                ) : (
-                  <div className="empty-state">Ange ditt användar-ID för att skapa inlägg</div>
-                )
-              } 
-            />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+              <Route
+                path="/timeline"
+                element={
+                  <ProtectedRoute>
+                    <TimelinePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/wall"
+                element={
+                  <ProtectedRoute>
+                    <WallPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/messages"
+                element={
+                  <ProtectedRoute>
+                    <MessagesPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/create-post"
+                element={
+                  <ProtectedRoute>
+                    <CreatePostPage />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
 // Komponent för Följ-sidan
-function FollowPage({ currentUserId }) {
+function FollowPage() {
+  const { userId } = useAuth();
   const [targetUserId, setTargetUserId] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -112,6 +91,7 @@ function FollowPage({ currentUserId }) {
 
   return (
     <div>
+      <Navigation />
       <div className="user-input-section">
         <div className="input-group">
           <label htmlFor="targetUserId">Användar-ID att följa:</label>
@@ -128,7 +108,7 @@ function FollowPage({ currentUserId }) {
         {targetUserId && (
           <div className="follow-section">
             <FollowUser
-              followerId={currentUserId}
+              followerId={userId}
               followingId={targetUserId}
               onFollowChange={handleFollowChange}
             />
@@ -138,10 +118,55 @@ function FollowPage({ currentUserId }) {
 
       <div className="lists-section">
         <div className="lists-container">
-          <FollowersList key={`followers-${refreshKey}`} userId={currentUserId} />
-          <FollowingList key={`following-${refreshKey}`} userId={currentUserId} />
+          <FollowersList key={`followers-${refreshKey}`} userId={userId} />
+          <FollowingList key={`following-${refreshKey}`} userId={userId} />
         </div>
       </div>
+    </div>
+  );
+}
+
+function TimelinePage() {
+  const { userId } = useAuth();
+  return (
+    <div>
+      <Navigation />
+      <Timeline userId={userId} />
+    </div>
+  );
+}
+
+function WallPage() {
+  const { userId } = useAuth();
+  return (
+    <div>
+      <Navigation />
+      <Wall userId={userId} />
+    </div>
+  );
+}
+
+function MessagesPage() {
+  const { userId } = useAuth();
+  return (
+    <div>
+      <Navigation />
+      <DirectMessages userId={userId} />
+    </div>
+  );
+}
+
+function CreatePostPage() {
+  const { userId } = useAuth();
+  return (
+    <div>
+      <Navigation />
+      <CreatePost
+        senderId={userId}
+        onPostCreated={() => {
+          console.log('Nytt inlägg skapat!');
+        }}
+      />
     </div>
   );
 }

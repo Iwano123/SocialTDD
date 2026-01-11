@@ -1,15 +1,13 @@
+import { authenticatedFetch } from '../utils/apiClient';
+
 const API_BASE_URL = 'http://localhost:5000/api';
 
 export const dmApi = {
   // Skicka ett direktmeddelande
-  async sendDirectMessage(senderId, recipientId, message) {
-    const response = await fetch(`${API_BASE_URL}/directmessages`, {
+  async sendDirectMessage(recipientId, message) {
+    const response = await authenticatedFetch(`${API_BASE_URL}/directmessages`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
-        senderId,
         recipientId,
         message,
       }),
@@ -25,7 +23,7 @@ export const dmApi = {
 
   // Hämta mottagna meddelanden för en användare
   async getReceivedMessages(userId) {
-    const response = await fetch(`${API_BASE_URL}/directmessages/received/${userId}`);
+    const response = await authenticatedFetch(`${API_BASE_URL}/directmessages/received`);
 
     if (!response.ok) {
       const error = await response.json();
@@ -37,7 +35,7 @@ export const dmApi = {
 
   // Markera ett meddelande som läst
   async markAsRead(messageId) {
-    const response = await fetch(`${API_BASE_URL}/directmessages/${messageId}/read`, {
+    const response = await authenticatedFetch(`${API_BASE_URL}/directmessages/${messageId}/read`, {
       method: 'PUT',
     });
 

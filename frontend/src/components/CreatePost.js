@@ -67,7 +67,6 @@ function CreatePost({ senderId, onPostCreated }) {
       setSuccess(false);
 
       await postsApi.createPost(
-        senderId,
         recipientId.trim(),
         message.trim()
       );
