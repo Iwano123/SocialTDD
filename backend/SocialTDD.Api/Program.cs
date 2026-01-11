@@ -88,6 +88,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<CreatePostRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreatePostRequestDtoValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateDirectMessageRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
@@ -114,9 +115,6 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "SocialTDD API v1");
         c.RoutePrefix = string.Empty; // Swagger UI på root
     });
-    
-    // Detailed error pages in development
-    app.UseDeveloperExceptionPage();
 }
 else
 {

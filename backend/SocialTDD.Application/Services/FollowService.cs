@@ -39,6 +39,12 @@ public class FollowService : IFollowService
             throw new ArgumentException($"Användare med ID {request.FollowingId} finns inte.", nameof(request.FollowingId));
         }
 
+        // Validera att följare och följd inte är samma
+        if (request.FollowerId == request.FollowingId)
+        {
+            throw new ArgumentException("Användare kan inte följa sig själv.", nameof(request.FollowingId));
+        }
+
         // Kontrollera om relationen redan existerar
         var alreadyFollowing = await _followRepository.FollowExistsAsync(request.FollowerId, request.FollowingId);
         if (alreadyFollowing)
@@ -46,12 +52,8 @@ public class FollowService : IFollowService
             throw new InvalidOperationException($"Användare {request.FollowerId} följer redan användare {request.FollowingId}.");
         }
 
-        // Kontrollera cirkulära relationer
-        var isCircular = await _followRepository.IsCircularFollowAsync(request.FollowerId, request.FollowingId);
-        if (isCircular)
-        {
-            throw new InvalidOperationException($"Cirkulär följ-relation skulle skapas. Användare {request.FollowingId} följer redan {request.FollowerId}.");
-        }
+        // Ömsesidiga följ-relationer (A följer B och B följer A) är tillåtna
+        // Vi blockerar bara om användaren redan följer den andra (vilket kontrolleras ovan)
 
         // Skapa follow-relation
         var follow = new Follow

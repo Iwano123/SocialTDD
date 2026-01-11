@@ -39,6 +39,12 @@ public class PostService : IPostService
             throw new ArgumentException($"Mottagare med ID {request.RecipientId} finns inte.", nameof(request.RecipientId));
         }
 
+        // Validera att avsändare och mottagare inte är samma
+        if (request.SenderId == request.RecipientId)
+        {
+            throw new ArgumentException("Avsändare och mottagare kan inte vara samma användare.", nameof(request.RecipientId));
+        }
+
         // Skapa post
         var post = new Post
         {

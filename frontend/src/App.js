@@ -12,6 +12,8 @@ import Timeline from './components/Timeline';
 import Wall from './components/Wall';
 import DirectMessages from './components/DirectMessages';
 import CreatePost from './components/CreatePost';
+import UserSearch from './components/UserSearch';
+import UserProfile from './components/UserProfile';
 import './App.css';
 
 function App() {
@@ -82,8 +84,16 @@ function App() {
 // Komponent för Följ-sidan
 function FollowPage() {
   const { userId } = useAuth();
-  const [targetUserId, setTargetUserId] = useState('');
+  const [targetUserId, setTargetUserId] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleUserSelect = (user) => {
+    if (user) {
+      setTargetUserId(user.id);
+    } else {
+      setTargetUserId(null);
+    }
+  };
 
   const handleFollowChange = () => {
     setRefreshKey(prev => prev + 1);
@@ -94,19 +104,17 @@ function FollowPage() {
       <Navigation />
       <div className="user-input-section">
         <div className="input-group">
-          <label htmlFor="targetUserId">Användar-ID att följa:</label>
-          <input
-            id="targetUserId"
-            type="text"
-            value={targetUserId}
-            onChange={(e) => setTargetUserId(e.target.value)}
-            placeholder="Ange användar-ID att följa"
-            className="user-input"
+          <label htmlFor="targetUserId">Sök användare att följa:</label>
+          <UserSearch
+            onUserSelect={handleUserSelect}
+            placeholder="Sök efter användare..."
+            excludeUserId={userId}
           />
         </div>
 
         {targetUserId && (
           <div className="follow-section">
+            <UserProfile userId={targetUserId} />
             <FollowUser
               followerId={userId}
               followingId={targetUserId}
@@ -118,8 +126,16 @@ function FollowPage() {
 
       <div className="lists-section">
         <div className="lists-container">
-          <FollowersList key={`followers-${refreshKey}`} userId={userId} />
-          <FollowingList key={`following-${refreshKey}`} userId={userId} />
+          <FollowersList 
+            key={`followers-${refreshKey}`} 
+            userId={userId}
+            onFollowerClick={handleUserSelect}
+          />
+          <FollowingList 
+            key={`following-${refreshKey}`} 
+            userId={userId}
+            onFollowingClick={handleUserSelect}
+          />
         </div>
       </div>
     </div>

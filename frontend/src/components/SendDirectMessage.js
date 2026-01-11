@@ -1,58 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import * as yup from 'yup';
 import { dmApi } from '../services/dmApi';
 import { ApiError, ErrorCodes } from '../utils/ApiError';
+import UserSearch from './UserSearch';
 import './SendDirectMessage.css';
+
+const MAX_MESSAGE_LENGTH = 500;
+const MIN_MESSAGE_LENGTH = 1;
+
+// Yup-valideringsschema
+const directMessageSchema = yup.object().shape({
+  recipientId: yup
+    .string()
+    .required('Mottagare är obligatoriskt.')
+    .matches(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+      'Ogiltigt användar-ID.'
+    ),
+  message: yup
+    .string()
+    .required('Meddelande är obligatoriskt.')
+    .trim()
+    .min(MIN_MESSAGE_LENGTH, `Meddelande måste vara minst ${MIN_MESSAGE_LENGTH} tecken.`)
+    .max(MAX_MESSAGE_LENGTH, `Meddelande får inte vara längre än ${MAX_MESSAGE_LENGTH} tecken.`)
+    .test('not-empty', 'Meddelande får inte vara tomt eller bara innehålla mellanslag.', (value) => {
+      return value && value.trim().length >= MIN_MESSAGE_LENGTH;
+    }),
+});
 
 function SendDirectMessage({ senderId, onMessageSent }) {
   const [recipientId, setRecipientId] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+  const [touched, setTouched] = useState({});
 
-  const MAX_MESSAGE_LENGTH = 500;
-  const MIN_MESSAGE_LENGTH = 1;
+  const handleUserSelect = (user) => {
+    if (user) {
+      setRecipientId(user.id);
+      setSelectedUser(user);
+      setError(null);
+      setValidationErrors(prev => ({ ...prev, recipientId: null }));
+    } else {
+      setRecipientId('');
+      setSelectedUser(null);
+      setValidationErrors(prev => ({ ...prev, recipientId: 'Mottagare är obligatoriskt.' }));
+    }
+  };
 
-  const validateForm = () => {
+  // Real-time validering för message
+  useEffect(() => {
+    if (touched.message && message.trim().length > 0) {
+      directMessageSchema
+        .validateAt('message', { message }, { abortEarly: false })
+        .then(() => {
+          setValidationErrors(prev => ({ ...prev, message: null }));
+        })
+        .catch((err) => {
+          if (err.errors && err.errors.length > 0) {
+            setValidationErrors(prev => ({ ...prev, message: err.errors[0] }));
+          }
+        });
+    }
+  }, [message, touched.message]);
+
+  // Validera att avsändare och mottagare inte är samma
+  useEffect(() => {
+    if (touched.recipientId && recipientId && senderId) {
+      if (recipientId.toLowerCase() === senderId.toLowerCase()) {
+        setValidationErrors(prev => ({
+          ...prev,
+          recipientId: 'Du kan inte skicka meddelande till dig själv.'
+        }));
+      } else {
+        setValidationErrors(prev => ({ ...prev, recipientId: null }));
+      }
+    }
+  }, [recipientId, senderId, touched.recipientId]);
+
+  const validateForm = async () => {
     setError(null);
+    setValidationErrors({});
 
-    // Validera recipientId
-    if (!recipientId || recipientId.trim() === '') {
-      setError('Mottagare-ID är obligatoriskt.');
+    try {
+      await directMessageSchema.validate(
+        {
+          recipientId: recipientId.trim(),
+          message: message.trim(),
+        },
+        { abortEarly: false }
+      );
+
+      // Ytterligare validering: avsändare och mottagare kan inte vara samma
+      if (senderId && recipientId.trim().toLowerCase() === senderId.toLowerCase()) {
+        setError('Du kan inte skicka meddelande till dig själv.');
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      if (err.inner) {
+        const errors = {};
+        err.inner.forEach((error) => {
+          errors[error.path] = error.message;
+        });
+        setValidationErrors(errors);
+        setError('Valideringsfel. Kontrollera dina indata.');
+      } else {
+        setError(err.message || 'Valideringsfel.');
+      }
       return false;
     }
-
-    // Validera att recipientId är en giltig GUID
-    const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (!guidRegex.test(recipientId.trim())) {
-      setError('Mottagare-ID måste vara ett giltigt GUID.');
-      return false;
-    }
-
-    // Validera att avsändare och mottagare inte är samma
-    if (senderId && recipientId.trim().toLowerCase() === senderId.toLowerCase()) {
-      setError('Du kan inte skicka meddelande till dig själv.');
-      return false;
-    }
-
-    // Validera message
-    const trimmedMessage = message.trim();
-    if (!trimmedMessage || trimmedMessage.length === 0) {
-      setError('Meddelande är obligatoriskt.');
-      return false;
-    }
-
-    if (trimmedMessage.length < MIN_MESSAGE_LENGTH) {
-      setError(`Meddelande måste vara minst ${MIN_MESSAGE_LENGTH} tecken.`);
-      return false;
-    }
-
-    if (trimmedMessage.length > MAX_MESSAGE_LENGTH) {
-      setError(`Meddelande får inte vara längre än ${MAX_MESSAGE_LENGTH} tecken.`);
-      return false;
-    }
-
-    return true;
   };
 
   const handleSubmit = async (e) => {
@@ -72,6 +133,9 @@ function SendDirectMessage({ senderId, onMessageSent }) {
       setSuccess(true);
       setMessage('');
       setRecipientId('');
+      setSelectedUser(null);
+      setTouched({});
+      setValidationErrors({});
 
       // Callback för att notifiera förälder-komponenten
       if (onMessageSent) {
@@ -122,6 +186,15 @@ function SendDirectMessage({ senderId, onMessageSent }) {
     if (newMessage.length <= MAX_MESSAGE_LENGTH) {
       setMessage(newMessage);
       setError(null);
+      if (!touched.message) {
+        setTouched(prev => ({ ...prev, message: true }));
+      }
+    }
+  };
+
+  const handleUserSearchBlur = () => {
+    if (!touched.recipientId) {
+      setTouched(prev => ({ ...prev, recipientId: true }));
     }
   };
 
@@ -141,49 +214,64 @@ function SendDirectMessage({ senderId, onMessageSent }) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="send-dm-form">
+      <form onSubmit={handleSubmit} className="send-dm-form" noValidate>
         <div className="send-dm-field">
           <label htmlFor="recipientId" className="send-dm-label">
-            Mottagare-ID (GUID)
+            Mottagare <span className="required-asterisk">*</span>
           </label>
-          <input
-            type="text"
-            id="recipientId"
-            value={recipientId}
-            onChange={(e) => {
-              setRecipientId(e.target.value);
-              setError(null);
-            }}
-            placeholder="Ange mottagarens GUID"
-            className="send-dm-input"
-            disabled={loading}
-            required
-          />
+          <div onBlur={handleUserSearchBlur}>
+            <UserSearch
+              onUserSelect={handleUserSelect}
+              placeholder="Sök efter användare..."
+              excludeUserId={senderId}
+            />
+          </div>
+          {validationErrors.recipientId && touched.recipientId && (
+            <div className="field-error" role="alert">
+              {validationErrors.recipientId}
+            </div>
+          )}
+          {selectedUser && (
+            <div className="selected-user-info">
+              Vald användare: <strong>{selectedUser.username}</strong>
+            </div>
+          )}
         </div>
 
         <div className="send-dm-field">
           <label htmlFor="message" className="send-dm-label">
-            Meddelande
+            Meddelande <span className="required-asterisk">*</span>
           </label>
           <textarea
             id="message"
+            name="message"
             value={message}
             onChange={handleMessageChange}
+            onBlur={() => setTouched(prev => ({ ...prev, message: true }))}
             placeholder="Skriv ditt meddelande här..."
-            className="send-dm-textarea"
+            className={`send-dm-textarea ${
+              validationErrors.message && touched.message ? 'input-error' : ''
+            }`}
             rows="5"
             disabled={loading}
             required
           />
           <div className="send-dm-character-count">
-            {message.length} / {MAX_MESSAGE_LENGTH} tecken
+            <span className={message.length > MAX_MESSAGE_LENGTH ? 'character-count-error' : ''}>
+              {message.length} / {MAX_MESSAGE_LENGTH} tecken
+            </span>
           </div>
+          {validationErrors.message && touched.message && (
+            <div className="field-error" role="alert">
+              {validationErrors.message}
+            </div>
+          )}
         </div>
 
         <button
           type="submit"
           className="send-dm-button"
-          disabled={loading || !senderId}
+          disabled={loading || !senderId || !recipientId || !message.trim()}
         >
           {loading ? 'Skickar...' : 'Skicka meddelande'}
         </button>

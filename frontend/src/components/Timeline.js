@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { postsApi } from '../services/postsApi';
+import { userApi } from '../services/userApi';
 import { ApiError, ErrorCodes } from '../utils/ApiError';
 import './Timeline.css';
 
 function Timeline({ userId }) {
   const [posts, setPosts] = useState([]);
+  const [usernames, setUsernames] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,6 +24,28 @@ function Timeline({ userId }) {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
       setPosts(sortedPosts);
+
+      // Hämta användarnamn för alla unika användar-ID:n
+      const uniqueUserIds = new Set();
+      sortedPosts.forEach(post => {
+        if (post.senderId) uniqueUserIds.add(post.senderId);
+        if (post.recipientId) uniqueUserIds.add(post.recipientId);
+      });
+
+      const usernameMap = {};
+      await Promise.all(
+        Array.from(uniqueUserIds).map(async (id) => {
+          try {
+            const user = await userApi.getUserById(id);
+            if (user) {
+              usernameMap[id] = user.username;
+            }
+          } catch (err) {
+            console.error(`Kunde inte hämta användare ${id}:`, err);
+          }
+        })
+      );
+      setUsernames(usernameMap);
     } catch (err) {
       if (err instanceof ApiError) {
         switch (err.errorCode) {
@@ -114,12 +138,12 @@ function Timeline({ userId }) {
           {posts.map((post) => (
             <div key={post.id} className="post-item">
               <div className="post-header">
-                <span className="post-sender">Från: {post.senderId}</span>
+                <span className="post-sender">Från: {usernames[post.senderId] || post.senderId}</span>
                 <span className="post-date">{formatDate(post.createdAt)}</span>
               </div>
               <div className="post-message">{post.message}</div>
               {post.recipientId && (
-                <div className="post-recipient">Till: {post.recipientId}</div>
+                <div className="post-recipient">Till: {usernames[post.recipientId] || post.recipientId}</div>
               )}
             </div>
           ))}

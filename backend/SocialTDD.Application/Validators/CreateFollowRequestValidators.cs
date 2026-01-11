@@ -7,14 +7,12 @@ public class CreateFollowRequestValidator : AbstractValidator<CreateFollowReques
 {
     public CreateFollowRequestValidator()
     {
-        RuleFor(x => x.FollowerId)
-            .NotEmpty().WithMessage("FollowerId får inte vara tomt.");
-
+        // FollowerId valideras inte här eftersom den sätts från JWT token i controllern
+        // Validera FollowingId
         RuleFor(x => x.FollowingId)
             .NotEmpty().WithMessage("FollowingId får inte vara tomt.");
 
-        RuleFor(x => x)
-            .Must(x => x.FollowerId != x.FollowingId)
-            .WithMessage("En användare kan inte följa sig själv.");
+        // Validera att följare och följd inte är samma (valideras i service layer)
+        // Detta valideras i service layer efter att FollowerId har satts från token
     }
 }

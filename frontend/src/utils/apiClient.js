@@ -94,5 +94,27 @@ export const handleApiResponse = async (response) => {
     throw new ApiError(errorCode, message, response.status, errorData.details);
   }
 
-  return await response.json();
+  // Hantera NoContent (204) - inget body att parsa
+  if (response.status === 204) {
+    return null;
+  }
+
+  // Kontrollera om response har content
+  const contentType = response.headers.get('content-type');
+  if (!contentType || !contentType.includes('application/json')) {
+    return null;
+  }
+
+  // Försök parsa JSON, men hantera tom body gracefully
+  const text = await response.text();
+  if (!text || text.trim().length === 0) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    // Om JSON-parsing misslyckas, returnera null istället för att kasta fel
+    return null;
+  }
 };
