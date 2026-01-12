@@ -94,7 +94,7 @@ SocialTDD.Tests/
 │   ├── TimelineServiceTests.cs      ✅ Tester för tidslinje
 │   ├── WallServiceTests.cs         ✅ Tester för vägg
 │   └── UserServiceTests.cs          ✅ Tester för autentisering
-└── UnitTest1.cs                     ⚠️ Tom fil (ska tas bort)
+
 ```
 
 ## Generera Coverage-rapport
