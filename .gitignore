@@ -65,6 +65,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+## React build output
+frontend/build/
+frontend/build/**
+
 ## Environment variables
 .env
 .env.local
@@ -102,6 +106,8 @@ coverage.*/
 *.lcov
 .coverlet/
 .coveralls.yml
+# CoverageReport kan genereras lokalt men behöver inte committas
+CoverageReport/
 
 ## Test output files
 *.testlog

@@ -23,44 +23,59 @@ Detta projekt är en kompletteringsuppgift för kursen och implementerar en soci
 ```
 SocialTDD/
 ├── backend/
-│   ├── SocialTDD.Api/          # Web API controllers
-│   ├── SocialTDD.Application/  # Business logic, services, DTOs
-│   ├── SocialTDD.Domain/       # Domain entities
-│   ├── SocialTDD.Infrastructure/ # Data access, repositories
-│   └── SocialTDD.Tests/        # Unit tests
-└── frontend/                    # React application
+│   ├── SocialTDD.Api/              # Web API controllers, Program.cs
+│   ├── SocialTDD.Application/      # Business logic, services, DTOs, validators
+│   ├── SocialTDD.Domain/           # Domain entities (User, Post, Follow, DirectMessage)
+│   ├── SocialTDD.Infrastructure/   # Data access, repositories, EF Core migrations
+│   └── SocialTDD.Tests/            # Unit tests för alla services
+├── frontend/                       # React application
+│   ├── src/
+│   │   ├── components/            # React-komponenter
+│   │   ├── contexts/              # React contexts (AuthContext)
+│   │   ├── services/               # API-anrop
+│   │   └── utils/                  # Hjälpfunktioner
+│   └── public/                     # Statiska filer
+├── CoverageReport/                 # Test coverage-rapporter (genereras)
+└── .github/workflows/              # CI/CD pipelines
 ```
 
 ## 🚀 Setup
 
+### Förutsättningar
+
+- **.NET 9.0 SDK** - [Ladda ner här](https://dotnet.microsoft.com/download)
+- **Node.js** (v16 eller senare) - [Ladda ner här](https://nodejs.org/)
+- **SQL Server LocalDB** - Inkluderas med Visual Studio eller installera separat
+- **Git** - För versionshantering
+
 ### Snabbstart (Rekommenderat)
 
-Starta både backend och frontend med ett enda kommando:
+Starta både backend och frontend med ett enda kommando från projektets rot:
 
-**PowerShell:**
-```powershell
-.\start.ps1
+```bash
+# Installera alla dependencies först
+npm run install:all
+
+# Starta både backend och frontend
+npm start
 ```
 
-**Command Prompt:**
-```cmd
-start.bat
-```
-
-Detta startar båda servrarna i separata fönster:
-- Backend: http://localhost:5000
-- Frontend: http://localhost:3000
+Detta startar båda servrarna samtidigt:
+- **Backend API**: http://localhost:5000
+- **Frontend**: http://localhost:3000 (öppnas automatiskt i webbläsaren)
+- **Swagger UI**: http://localhost:5000/swagger
 
 ### Manuell start
 
 #### Backend
 
-1. Restore dependencies:
+1. **Restore dependencies:**
    ```bash
+   cd backend
    dotnet restore
    ```
 
-2. Konfigurera databas i `appsettings.json`:
+2. **Konfigurera databas** i `backend/SocialTDD.Api/appsettings.json`:
    ```json
    {
      "ConnectionStrings": {
@@ -68,29 +83,48 @@ Detta startar båda servrarna i separata fönster:
      }
    }
    ```
+   > **OBS:** SQL Server LocalDB måste vara installerat och igång.
 
-3. Kör migrations:
+3. **Kör migrations** för att skapa databasen:
    ```bash
    dotnet ef database update --project backend/SocialTDD.Infrastructure --startup-project backend/SocialTDD.Api
    ```
+   > **OBS:** Kommandot körs från projektets rot-katalog.
 
-4. Kör API:
+4. **Starta API:**
    ```bash
    dotnet run --project backend/SocialTDD.Api
    ```
+   > **OBS:** Kommandot körs från projektets rot-katalog.
+   
+   API:et körs på http://localhost:5000
+   Swagger UI finns på http://localhost:5000/swagger
 
-### Frontend
+#### Frontend
 
-1. Installera dependencies:
+1. **Installera dependencies:**
    ```bash
    cd frontend
    npm install
    ```
 
-2. Starta utvecklingsserver:
+2. **Starta utvecklingsserver:**
    ```bash
    npm start
    ```
+   
+   Frontend öppnas automatiskt på http://localhost:3000
+
+### Felsökning
+
+**Problem med databas:**
+- Kontrollera att SQL Server LocalDB är installerat och igång
+- Verifiera connection string i `appsettings.json`
+- Kör migrations igen om databasen saknas
+
+**Problem med portar:**
+- Backend-port 5000: Ändra i `launchSettings.json` om porten är upptagen
+- Frontend-port 3000: React frågar automatiskt om porten är upptagen
 
 ## 🧪 Testning
 
@@ -140,18 +174,76 @@ Projektet använder .NET analyzers för statisk kodanalys. Se [STATIC_CODE_ANALY
 - [Statisk Kodanalys](STATIC_CODE_ANALYSIS.md) - Dokumentation av kodanalys och resultat
 - [Test Coverage](TEST_COVERAGE.md) - Dokumentation av test coverage och resultat
 
+### Ytterligare dokumentation
+
+- **Swagger UI**: http://localhost:5000/swagger (när backend körs)
+- **Coverage-rapport**: `./CoverageReport/index.html` (genereras efter testkörning)
+
 ## 🔐 Autentisering
 
 API:et använder JWT-autentisering. Endpoints är skyddade med `[Authorize]` attribut.
 
+### API Endpoints
+
+**Autentisering (publika):**
+- `POST /api/auth/register` - Registrera ny användare
+- `POST /api/auth/login` - Logga in och få JWT token
+
+**Användare (kräver autentisering):**
+- `GET /api/user/{userId}` - Hämta användare efter ID
+- `GET /api/user/username/{username}` - Hämta användare efter användarnamn
+- `GET /api/user/search?query={query}` - Sök efter användare
+
+**Inlägg (kräver autentisering):**
+- `POST /api/posts` - Skapa nytt inlägg
+- `GET /api/posts/timeline/{userId}` - Hämta tidslinje för användare
+
+**Följare (kräver autentisering):**
+- `POST /api/follow` - Följ en användare
+- `DELETE /api/follow/{followingId}` - Avfölj en användare
+- `GET /api/follow/followers/{userId}` - Hämta följare
+- `GET /api/follow/following/{userId}` - Hämta följda användare
+
+**Vägg (kräver autentisering):**
+- `GET /api/wall` - Hämta aggregat-flöde från följda användare
+
+**Direktmeddelanden (kräver autentisering):**
+- `POST /api/directmessages` - Skicka direktmeddelande
+- `GET /api/directmessages/received` - Hämta mottagna meddelanden
+- `PUT /api/directmessages/{messageId}/read` - Markera meddelande som läst
+
+### Swagger UI
+
+När backend körs kan du använda Swagger UI för att testa API:et:
+- Öppna http://localhost:5000/swagger i webbläsaren
+- Logga in via `/api/auth/login` för att få JWT token
+- Klicka på "Authorize" och ange token: `Bearer {din-token}`
+
 ## 📝 Funktionalitet
 
-1. ✅ Posta inlägg på användares tidslinjer
-2. ✅ Läsa tidslinje (kronologisk ordning)
-3. ✅ Följa användare
-4. ✅ Vägg (aggregat-flöde från följda användare)
-5. ✅ Direktmeddelanden (DM)
-6. ✅ Persistens (SQL Server)
+Alla krav från uppgiftsbeskrivningen är implementerade:
+
+1. ✅ **Posta inlägg** - Användare kan publicera meddelanden på andra användares tidslinjer
+   - Validering: avsändare, mottagare, meddelandelängd (1-500 tecken)
+   
+2. ✅ **Läsa tidslinje** - Användare kan se sina egna eller någon annans inlägg i kronologisk ordning
+   - Sorteras efter datum (nyast först)
+   
+3. ✅ **Följa användare** - Användare kan följa andra användare
+   - Lagras i relationstabell
+   - Ömsesidiga följ-relationer tillåtna
+   
+4. ✅ **Vägg (aggregat-flöde)** - Användare ser en samlad feed baserad på alla de följer
+   - Senaste inlägg visas överst
+   - Testad med enhetstester
+   
+5. ✅ **Direktmeddelanden (DM)** - Skicka och ta emot DM mellan två användare
+   - DM visas inte i vägg eller publika flöden
+   - Möjlighet att markera meddelanden som lästa
+   
+6. ✅ **Persistens** - All data sparas i SQL Server
+   - Data kvarstår efter session och restart
+   - Entity Framework Core migrations för databasschema
 
 ## 📊 Test Coverage
 
@@ -162,6 +254,42 @@ API:et använder JWT-autentisering. Endpoints är skyddade med `[Authorize]` att
 - **Method coverage**: 59.8%
 - Coverage-rapporter genereras automatiskt i CI/CD
 - Se [TEST_COVERAGE.md](TEST_COVERAGE.md) för detaljerad dokumentation
+
+## 🛠️ Utveckling
+
+### Bygga projektet
+
+```bash
+# Bygg backend
+cd backend
+dotnet build
+
+# Bygg frontend
+cd frontend
+npm run build
+```
+
+### Kör alla tester
+
+```bash
+# Backend-tester
+dotnet test
+
+# Frontend-tester
+cd frontend
+npm test
+```
+
+### Generera coverage-rapport
+
+```bash
+# Kör tester med coverage
+dotnet test --configuration Release --collect:"XPlat Code Coverage" --results-directory:"./TestResults" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+
+# Generera HTML-rapport (kräver dotnet-reportgenerator-globaltool)
+dotnet tool install -g dotnet-reportgenerator-globaltool
+reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./CoverageReport" -reporttypes:"Html;Badges;TextSummary"
+```
 
 ## 📄 Licens
 
