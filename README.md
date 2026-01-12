@@ -48,32 +48,15 @@ SocialTDD/
 - **SQL Server LocalDB** - Inkluderas med Visual Studio eller installera separat
 - **Git** - För versionshantering
 
-### Snabbstart (Rekommenderat)
-
-Starta både backend och frontend med ett enda kommando från projektets rot:
-
-```bash
-# Installera alla dependencies först
-npm run install:all
-
-# Starta både backend och frontend
-npm start
-```
-
-Detta startar båda servrarna samtidigt:
-- **Backend API**: http://localhost:5000
-- **Frontend**: http://localhost:3000 (öppnas automatiskt i webbläsaren)
-- **Swagger UI**: http://localhost:5000/swagger
-
-### Manuell start
+### Starta Projektet
 
 #### Backend
 
-1. **Restore dependencies:**
+1. **Restore dependencies** (från projektets rot):
    ```bash
-   cd backend
    dotnet restore
    ```
+   > **OBS:** Kommandot körs från projektets rot-katalog och restore:ar alla .NET-projekt automatiskt.
 
 2. **Konfigurera databas** i `backend/SocialTDD.Api/appsettings.json`:
    ```json
@@ -95,10 +78,12 @@ Detta startar båda servrarna samtidigt:
    ```bash
    dotnet run --project backend/SocialTDD.Api
    ```
-   > **OBS:** Kommandot körs från projektets rot-katalog.
+   > **OBS:** Kommandot körs från projektets rot-katalog. `dotnet run` kommer automatiskt att restore:a dependencies om det behövs.
    
    API:et körs på http://localhost:5000
    Swagger UI finns på http://localhost:5000/swagger
+   
+   > **Tips:** För att starta både backend och frontend samtidigt kan du använda två separata terminalfönster eller ett terminalverktyg som stödjer flera sessions.
 
 #### Frontend
 
