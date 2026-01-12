@@ -1,7 +1,7 @@
 {
   "name": "socialtdd",
   "version": "1.0.0",
-  "description": "SocialTDD - Social network application",
+  "description": "Socially - Social network application",
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "cd backend/SocialTDD.Api && dotnet run",

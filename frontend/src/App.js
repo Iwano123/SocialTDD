@@ -22,7 +22,7 @@ function App() {
       <Router>
         <div className="App">
           <header className="App-header">
-            <h1>SocialTDD</h1>
+            <h1>Socially</h1>
             <p>Socialt nätverk</p>
           </header>
 

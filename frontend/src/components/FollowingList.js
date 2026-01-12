@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { followApi } from '../services/followApi';
 import { userApi } from '../services/userApi';
 import './FollowingList.css';
@@ -9,7 +9,7 @@ function FollowingList({ userId, onFollowingClick }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchFollowing = async () => {
+  const fetchFollowing = useCallback(async () => {
     if (!userId) return;
 
     try {
@@ -38,11 +38,11 @@ function FollowingList({ userId, onFollowingClick }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     fetchFollowing();
-  }, [userId]);
+  }, [fetchFollowing]);
 
   if (loading) {
     return (
