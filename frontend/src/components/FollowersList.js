@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { followApi } from '../services/followApi';
 import { userApi } from '../services/userApi';
 import './FollowersList.css';
@@ -9,7 +9,7 @@ function FollowersList({ userId, onFollowerClick }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchFollowers = async () => {
+  const fetchFollowers = useCallback(async () => {
     if (!userId) return;
 
     try {
@@ -38,11 +38,11 @@ function FollowersList({ userId, onFollowerClick }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     fetchFollowers();
-  }, [userId]);
+  }, [fetchFollowers]);
 
   if (loading) {
     return (
