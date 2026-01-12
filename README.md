@@ -1,4 +1,4 @@
-# SocialTDD
+# Socially
 
 Socialt nätverk byggt med Test-Driven Development (TDD) och Clean Code-principer.
 
